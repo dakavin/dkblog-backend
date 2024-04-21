@@ -71,7 +71,8 @@
                 <version>${guava.version}</version>
             </dependency>
 
-            <dependency>            <groupId>org.apache.commons</groupId>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
@@ -85,7 +86,8 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>                    <excludes>
+                    <configuration>
+                    <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
