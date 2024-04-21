@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.web.controller;
 
+import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.model.User;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import lombok.extern.slf4j.Slf4j;
@@ -43,5 +44,20 @@ public class TestController {
         }
         // 没有错误
         return ResponseEntity.ok("参数没有问题");
+    }
+
+    @PostMapping("/test3")
+    @ApiOperationLog(description = "测试全局响应的接口")
+    public Response test3(@RequestBody @Validated User user, BindingResult bindingResult){
+        // 如果参数存在错误，则返回错误的参数
+        if (bindingResult.hasErrors()){
+            // 获取校验错误的每一个字段
+            String errorMsg = bindingResult.getFieldErrors()
+                    .stream().map(FieldError::getDefaultMessage)
+                    .collect(Collectors.joining(","));
+            return Response.fail(errorMsg);
+        }
+        // 没有错误
+        return Response.success();
     }
 }

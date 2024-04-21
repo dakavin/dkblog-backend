@@ -2,3 +2,6 @@ spring:
     profiles:
         # 默认激活 dev 环境
         active: dev
+    jackson:
+        # 设置后台对于参数为 null 的值，不返回给前台（看数据情况选择）
+        # default-property-inclusion: non_null
