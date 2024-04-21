@@ -1,4 +1,4 @@
-package com.dakkk.blog.web;
+package com.dakkk.dkblog.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 class DkblogWebApplicationTests {
 
+    // 测试 dev 和 prod 环境下 日志的输出是否正确！
     @Test
     public void testLog(){
         log.info("这是一行 info 级别的日志");
