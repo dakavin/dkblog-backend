@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration >
+    <jmxConfigurator/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <!-- 应用名称，scope表示这个属性的作用域是上下文（全局） -->
+    <property scope="context" name="appName" value="blog" />
+    <!-- 指定日志输出路径、日志名称前缀、${appName}为引用vlog这个值-->
+    <property name="LOG_FILE" value="/app/blog/logs/${appName}.%d{yyyy-MM-dd}"/>
+    <!-- 测试输出日志到本地文件中 -->
+    <!-- <property name="LOG_FILE" value="E:\\0_Java-Project\\4_blog\\logs\\${appName}.%d{yyyy-MM-dd}"/> -->
+    <!-- 指定日志文件的格式：格式化输出：%d 表示日期，%thread 表示线程名，%-5level：级别从左显示 5 个字符宽度 %errorMessage：日志消息，%n 是换行符-->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+    <!--<property name="CONSOLE_LOG_PATTERN" value="${FILE_LOG_PATTERN}"/>-->
+
+    <!-- 按照每天生成日志文件 -->
+    <!-- “appender” 是指将日志消息发送到指定目的的组件或插件 -->
+    <!-- class属性决定appender输出的位置是文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件输出的文件名 `%i 表示滚动编号 -->
+            <FileNamePattern>${LOG_FILE}-%i.log</FileNamePattern>
+            <!-- 日志文件保留天数 -->
+            <MaxHistory>30</MaxHistory>
+            <!-- 定义了文件命名和触发策略，该类表示同时基于文件大小和时间触发滚动 -->
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件最大的大小，达到这个大小时会触发滚动 -->
+                <maxFileSize>10MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- 指定了日志的输出格式，使用了之前定义的FILE_LOG_PATTERN属性 -->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- dev 环境（仅输出到控制台） -->
+    <springProfile name="dev">
+        <!-- 这个文件会配置控制台输出的日志格式、颜色等 -->
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+        <!-- 意味着只有 INFO 级别及以上的日志消息会记录 -->
+        <!-- 只有 INFO、WARN、ERROR、FATAL 等级别的消息会被输出 -->
+        <!-- 而 DEBUG 和 TRACE 等级别的消息将被忽略 -->
+        <root level="INFO">
+            <!-- 将名为 “CONSOLE” 的 appender 关联到根日志记录器 -->
+            <!-- 根日志记录器的日志消息将会被发送到控制台输出 -->
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- prod 环境（仅输出到文件中） -->
+    <springProfile name="prod">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
