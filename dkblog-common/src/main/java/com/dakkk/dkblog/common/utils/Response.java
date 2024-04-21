@@ -1,5 +1,7 @@
 package com.dakkk.dkblog.common.utils;
 
+import com.dakkk.dkblog.common.exception.BaseExceptionInterface;
+import com.dakkk.dkblog.common.exception.BizException;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -60,6 +62,28 @@ public class Response<T> implements Serializable {
         response.setSuccess(false);
         response.setErroerCode(erroerCode);
         response.setMsg(errorMsg);
+        return response;
+    }
+
+    /**
+     * 响应失败的方法3：通过bizException获取失败异常码和异常信息
+     */
+    public static <T> Response<T> fail(BizException e){
+        Response<T> response = new Response<>();
+        response.setSuccess(false);
+        response.setErroerCode(e.getErrorCode());
+        response.setMsg(e.getErrorMsg());
+        return response;
+    }
+
+    /**
+     * 响应失败的方法4：通过BaseExceptionInterface的实现类，获取异常码和异常信息
+     */
+    public static <T> Response<T> fail(BaseExceptionInterface baseExceptionInterface){
+        Response<T> response = new Response<>();
+        response.setSuccess(false);
+        response.setErroerCode(baseExceptionInterface.getErrorCode());
+        response.setMsg(baseExceptionInterface.getErrorMsg());
         return response;
     }
 

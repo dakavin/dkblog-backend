@@ -1,5 +1,7 @@
 package com.dakkk.dkblog.web.controller;
 
+import com.dakkk.dkblog.common.exception.BizException;
+import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.model.User;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
@@ -58,6 +60,21 @@ public class TestController {
             return Response.fail(errorMsg);
         }
         // 没有错误
+        return Response.success();
+    }
+
+    @PostMapping("/test4")
+    @ApiOperationLog(description = "测试BizException异常响应的接口")
+    public Response test4(@RequestBody @Validated User user, BindingResult bindingResult){
+        // 手动抛异常，入参是前面定义好的异常码枚举，返回统一交给全局处理器搞定
+        throw new BizException(ResponseErrorCodeEnum.PRODUCT_NOT_FOUND);
+    }
+
+    @PostMapping("/test5")
+    @ApiOperationLog(description = "测试Exception异常响应的接口")
+    public Response test5(@RequestBody @Validated User user, BindingResult bindingResult){
+        // 手动抛异常，入参是前面定义好的异常码枚举，返回统一交给全局处理器搞定
+        int i = 1/0;
         return Response.success();
     }
 }
