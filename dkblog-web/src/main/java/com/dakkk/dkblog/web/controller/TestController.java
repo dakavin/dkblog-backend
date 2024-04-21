@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 /**
@@ -93,5 +96,16 @@ public class TestController {
         // 入参的时候，填写不符合标准的参数来测试
         System.out.println(user);
         return Response.success();
+    }
+
+    @PostMapping("/test7")
+    @ApiOperationLog(description = "测试时间格式是否正确响应的接口")
+    @ApiOperation("测试时间格式是否正确响应的接口")
+    public Response test7(@RequestBody @Validated User user){
+        // 设置三种日期字段值
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDate.now());
+        user.setTime(LocalTime.now());
+        return Response.success(user);
     }
 }
