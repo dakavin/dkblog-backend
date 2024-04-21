@@ -77,4 +77,12 @@ public class TestController {
         int i = 1/0;
         return Response.success();
     }
+
+    @PostMapping("/test6")
+    @ApiOperationLog(description = "测试参数异常响应的接口")
+    public Response test6(@RequestBody @Validated User user){
+        // 入参的时候，填写不符合标准的参数来测试
+        System.out.println(user);
+        return Response.success();
+    }
 }

@@ -18,7 +18,9 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 通用异常状态码
     SYSTEM_ERROR("10000","\uD83D\uDE11出错啦，后台小哥正在努力修复中。。。"),
     // 业务异常状态码
-    PRODUCT_NOT_FOUND("20000","\uD83E\uDD2D该业务不存在哈。。。（测试使用）");
+    PRODUCT_NOT_FOUND("20000","\uD83E\uDD2D该业务不存在哈。。。（测试使用）"),
+    // 参数异常状态码
+    PARAM_NOT_VALID("10001","\uD83E\uDD28填写的参数错误哦");
 
 
     // 异常码
