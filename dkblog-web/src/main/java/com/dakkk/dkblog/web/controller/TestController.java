@@ -2,6 +2,7 @@ package com.dakkk.dkblog.web.controller;
 
 import com.dakkk.dkblog.common.exception.BizException;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
+import com.dakkk.dkblog.common.utils.JsonUtil;
 import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.model.User;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
@@ -107,5 +108,14 @@ public class TestController {
         user.setUpdateTime(LocalDate.now());
         user.setTime(LocalTime.now());
         return Response.success(user);
+    }
+
+    @PostMapping("/admin/test")
+    @ApiOperationLog(description = "测试Security是否能拦截的接口")
+    @ApiOperation("测试日志切面的接口")
+    public Response testSecurity(@RequestBody @Validated User user){
+        log.info(JsonUtil.toJsonString(user));
+
+        return Response.success();
     }
 }
