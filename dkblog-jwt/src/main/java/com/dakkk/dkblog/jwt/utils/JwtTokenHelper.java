@@ -103,6 +103,27 @@ public class JwtTokenHelper implements InitializingBean {
     }
 
     /**
+     * 校验 token 是否可用
+     */
+    public void validateToken(String token){
+        jwtParser.parseClaimsJws(token);
+    }
+
+    /**
+     * 解析 Token 获取用户名
+     */
+    public String getUsernameByToken(String token){
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            String username = claims.getSubject();
+            return username;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 生成一个 Base64 的安全密钥字符串的方法
      */
     private static String generateBase64Key(){
