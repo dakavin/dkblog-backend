@@ -39,4 +39,16 @@ class DkblogWebApplicationTests {
                 .build();
         userMapper.insert(userDO);
     }
+
+    @Test
+    public void testP6spy(){
+        UserDO userDO = UserDO.builder()
+                .username("mikeylay1")
+                .password("123456")
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .isDeleted(0)
+                .build();
+        userMapper.insert(userDO);
+    }
 }
