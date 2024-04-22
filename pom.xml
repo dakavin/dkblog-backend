@@ -30,6 +30,8 @@
         <module>dkblog-admin</module>
         <!-- 通用模块 -->
         <module>dkblog-common</module>
+        <!-- JWT 模块 -->
+        <module>dkblog-jwt</module>
     </modules>
 
     <!-- 版本号统一管理 -->
@@ -65,6 +67,12 @@
             <dependency>
                 <groupId>com.dakkk</groupId>
                 <artifactId>dkblog-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.dakkk</groupId>
+                <artifactId>dkblog-jwt</artifactId>
                 <version>${revision}</version>
             </dependency>
 
