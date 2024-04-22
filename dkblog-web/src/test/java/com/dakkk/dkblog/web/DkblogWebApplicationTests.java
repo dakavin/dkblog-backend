@@ -1,8 +1,15 @@
 package com.dakkk.dkblog.web;
 
+import com.dakkk.dkblog.common.domain.dos.UserDO;
+import com.dakkk.dkblog.common.domain.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @SpringBootTest
 @Slf4j
@@ -18,5 +25,18 @@ class DkblogWebApplicationTests {
         // 占位符测试
         String author = "dakkk";
         log.info("这是一行带有占位符日志，作者:{}",author);
+    }
+    @Resource
+    private UserMapper userMapper;
+    @Test
+    public void testMP(){
+        UserDO userDO = UserDO.builder()
+                .username("mikeylay")
+                .password("123456")
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .isDeleted(0)
+                .build();
+        userMapper.insert(userDO);
     }
 }
