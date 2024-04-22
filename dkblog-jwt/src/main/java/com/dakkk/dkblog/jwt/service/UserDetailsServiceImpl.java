@@ -1,11 +1,16 @@
 package com.dakkk.dkblog.jwt.service;
 
+import com.dakkk.dkblog.common.domain.dos.UserDO;
+import com.dakkk.dkblog.common.domain.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * ClassName: UserDetailServiceImpl
@@ -18,14 +23,20 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
+    @Resource
+    UserMapper userMapper;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // todo 从数据库查询并获取用户信息
+        // 根据用户名从数据库查询用户
+        UserDO userDO = userMapper.findByUsernameUserDo(username);
+        // 判断用户是否存在
+        if (Objects.isNull(userDO)){
+            throw new UsernameNotFoundException("该用户不存在");
+        }
 
-        // 暂时先写死，用户为 zhangsan 密码使用加密过的Bcrypt密码
         // authorities 用户指定角色，这里写死，将用户的角色设为 ADMIN 管理员
-        return User.withUsername("zhangsan")
-                .password("$2a$10$j6i/1HDGI0r98SEYfNZmW.6bban7mwWxl6ANGWu09xkhDTsrFgP8C")
+        return User.withUsername(userDO.getUsername())
+                .password(userDO.getPassword())
                 .authorities("ADMIN")
                 .build();
     }
