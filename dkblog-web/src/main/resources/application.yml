@@ -5,3 +5,8 @@ spring:
     jackson:
         # 设置后台对于参数为 null 的值，不返回给前台（看数据情况选择）
         # default-property-inclusion: non_null
+jwt:
+    # 签发人
+    issuer: dakkkk
+    # 秘钥（使用JwtTokenHelper中的main方法生成）
+    secret: GAHkw17oWXMOXsR0MDau5qceWzKIIbSLuY/bgOtrIlalIm0+7c5/HYUGH3SIy50rALrqXPeCfL5RCdCWZlLZYw==
