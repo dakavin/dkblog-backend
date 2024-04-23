@@ -21,7 +21,7 @@ import java.io.IOException;
  *
  * @Create 2024/4/22 22:44
  * @Author dakkk
- * Description:
+ * Description: 处理 用户未登录访问受保护的资源 的情况
  */
 @Slf4j
 @Component
@@ -33,7 +33,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             ResultUtil.fail(response,Response.fail(ResponseErrorCodeEnum.UNAUTHORIZED),HttpStatus.UNAUTHORIZED.value());
 
         }
-
         ResultUtil.fail(response,Response.fail(authException.getMessage()),HttpStatus.UNAUTHORIZED.value());
     }
 }

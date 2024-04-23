@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * @Create 2024/4/22 22:24
  * @Author dakkk
- * Description:
+ * Description: token校验过滤器
  */
 @Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
