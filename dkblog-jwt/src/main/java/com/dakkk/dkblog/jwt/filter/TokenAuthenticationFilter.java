@@ -7,6 +7,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Resource;
@@ -40,14 +42,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
+    @Value("${jwt.tokenHeaderKey}")
+    private String tokenHeaderKey;
+    @Value("${jwt.tokenPrefix}")
+    private String tokenPrefix;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 从请求头中获取 key 为 Authorization 的值
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(tokenHeaderKey);
 
         // 判断 value 值是否以 Bearer 开头
-        if (StringUtils.startsWith(header, "Bearer")) {
+        if (StringUtils.startsWith(header, tokenPrefix)) {
             // 截取 token 令牌
             String token = StringUtils.substring(header, 7);
             log.info("Token:{}", token);

@@ -63,13 +63,17 @@ public class JwtTokenHelper implements InitializingBean {
                 .build();
     }
 
+    @Value("${jwt.tokenExpireTime}")
+    private Long tokenExpireTime;
+
     /**
      * 根据username生成一个 JWT 令牌(token)，该令牌使用 key 进行签名
      * 令牌包含用户名和其他信息，如发行者和失效时间
      */
     public String generateToken(String username){
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expireTime = now.plusHours(1);
+        // 设置 Token 失效时间
+        LocalDateTime expireTime = now.plusMinutes(tokenExpireTime);
 
         // 生成令牌
         return Jwts.builder().setSubject(username)
