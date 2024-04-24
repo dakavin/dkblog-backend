@@ -80,8 +80,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                         && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
                     // 根据用户名获取用户的详细信息
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    // 将用户信息存入  authentication，方便后续校验
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null);
+                    // 将用户信息存入  authentication，方便后续校验，一定要给UserDetails权限
+                    // 出现了重大bug，因为没有将用户的角色放入UserDetails对象中，导致无法鉴权用户的角色
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     // 将 authentication 存入 ThreadLocal，方便后续获取用户信息
                     SecurityContextHolder.getContext().setAuthentication(authentication);

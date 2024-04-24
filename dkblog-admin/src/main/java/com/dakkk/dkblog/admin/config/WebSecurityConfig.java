@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 @Configuration
 @EnableWebSecurity
 // 启用方法级别的安全性设置，即在方法可以使用注解来定义访问控制规则
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtAuthenticationSecurityConfig jwtAuthenticaitonSecurityConfig;

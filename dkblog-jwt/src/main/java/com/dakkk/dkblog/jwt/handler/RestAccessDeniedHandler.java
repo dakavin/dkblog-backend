@@ -23,11 +23,11 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class RestAccessDeniedHandler  implements AccessDeniedHandler {
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.warn("登录成功访问受保护的资源，权限不够：{}",accessDeniedException);
+        log.warn("登录成功访问受保护的资源，权限不够：", accessDeniedException);
         // todo 预留，后面引入角色的时候用到
         ResultUtil.fail(response, Response.fail(ResponseErrorCodeEnum.FORBIDDEN));
     }

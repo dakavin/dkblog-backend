@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -112,10 +113,19 @@ public class TestController {
 
     @PostMapping("/admin/test")
     @ApiOperationLog(description = "测试Security是否能拦截的接口")
-    @ApiOperation("测试日志切面的接口")
+    @ApiOperation("测试Security是否能拦截的接口")
     public Response testSecurity(@RequestBody @Validated User user){
         log.info(JsonUtil.toJsonString(user));
 
+        return Response.success();
+    }
+
+    @PostMapping("/admin/update")
+    @ApiOperationLog(description = "测试接口能否完成鉴权")
+    @ApiOperation("测试接口能否完成鉴权")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Response testSecurityUpdate(){
+        log.info("更新成功...");
         return Response.success();
     }
 }
