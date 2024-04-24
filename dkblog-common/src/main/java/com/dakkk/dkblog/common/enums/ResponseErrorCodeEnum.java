@@ -22,11 +22,13 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 参数异常状态码
     PARAM_NOT_VALID("10001","\uD83E\uDD28填写的参数错误哦"),
     // 用户认证过程中，登录失败
-    LOGIN_FAIL("20000", "登录失败"),
+    LOGIN_FAIL("20000", "\uD83D\uDE35登录失败哟"),
     // 用户认证过程中，用户名和密码错误
-    USERNAME_OR_PWD_ERROR("20001", "用户名或密码错误"),
+    USERNAME_OR_PWD_ERROR("20001", "\uD83E\uDDD0用户名或密码错误啦"),
     // 用户未登录，访问受保护的资源
-    UNAUTHORIZED("20002", "无访问权限，请先登录！");
+    UNAUTHORIZED("20002", "\uD83E\uDEE4无访问权限，请先登录呀！"),
+    // 用户已登录，但是无权访问受保护的资源
+    FORBIDDEN("20004", "\uD83D\uDE0E演示账号仅支持查询操作哈！");
 
 
     // 异常码
