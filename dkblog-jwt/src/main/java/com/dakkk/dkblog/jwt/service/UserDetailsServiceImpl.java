@@ -1,16 +1,22 @@
 package com.dakkk.dkblog.jwt.service;
 
 import com.dakkk.dkblog.common.domain.dos.UserDO;
+import com.dakkk.dkblog.common.domain.dos.UserRoleDO;
 import com.dakkk.dkblog.common.domain.mapper.UserMapper;
+import com.dakkk.dkblog.common.domain.mapper.UserRoleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: UserDetailServiceImpl
@@ -25,6 +31,8 @@ import java.util.Objects;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     UserMapper userMapper;
+    @Resource
+    UserRoleMapper userRoleMapper;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 根据用户名从数据库查询用户
@@ -34,10 +42,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("该用户不存在");
         }
 
-        // authorities 用户指定角色，这里写死，将用户的角色设为 ADMIN 管理员
+        // 从数据库中获取用户角色
+        List<UserRoleDO> roleDOS = userRoleMapper.selectByUsername(username);
+
+        // 构建一个数组，用来获取用户的role属性
+        String[] roleArr = null;
+
+        // 获取roleDOS 中的 role属性
+        if (!CollectionUtils.isEmpty(roleDOS)){
+            List<String> roles = roleDOS.stream().map(p -> p.getRole()).collect(Collectors.toList());
+            roleArr = roles.toArray(new String[roles.size()]);
+        }
+
+        // authorities 指定用户的角色，用户的角色通过roleArr数组获取
         return User.withUsername(userDO.getUsername())
                 .password(userDO.getPassword())
-                .authorities("ADMIN")
+                .authorities(roleArr)
                 .build();
     }
 }
