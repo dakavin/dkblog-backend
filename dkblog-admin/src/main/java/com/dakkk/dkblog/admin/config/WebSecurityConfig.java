@@ -6,6 +6,7 @@ import com.dakkk.dkblog.jwt.handler.RestAccessDeniedHandler;
 import com.dakkk.dkblog.jwt.handler.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +25,8 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableWebSecurity
+// 启用方法级别的安全性设置，即在方法可以使用注解来定义访问控制规则
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtAuthenticationSecurityConfig jwtAuthenticaitonSecurityConfig;
