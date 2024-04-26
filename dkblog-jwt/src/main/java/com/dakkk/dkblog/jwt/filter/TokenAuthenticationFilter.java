@@ -55,7 +55,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         // 判断 value 值是否以 Bearer 开头
         if (StringUtils.startsWith(header, tokenPrefix)) {
             // 截取 token 令牌
-            String token = StringUtils.substring(header, 7);
+            String token = StringUtils.substring(header, 6);
             log.info("Token:{}", token);
 
             // 判空 Token
