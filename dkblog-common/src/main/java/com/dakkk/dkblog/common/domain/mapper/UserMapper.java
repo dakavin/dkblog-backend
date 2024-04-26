@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.dakkk.dkblog.common.domain.dos.UserDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -18,6 +19,20 @@ public interface UserMapper extends BaseMapper<UserDO> {
         LambdaQueryWrapper<UserDO> lqw = new LambdaQueryWrapper();
         lqw.eq(UserDO::getUsername,username);
         return selectOne(lqw);
+    }
+
+    /**
+     * 修改用户密码
+     */
+    default int updatePasswordByUsernameInt(String username,String password){
+        LambdaUpdateWrapper<UserDO> lqw = new LambdaUpdateWrapper<>();
+        // 设置需要更新的字段
+        lqw.set(UserDO::getUsername,username);
+        lqw.set(UserDO::getPassword,password);
+        // 更新条件
+        lqw.eq(UserDO::getUsername,username);
+
+        return update(null,lqw);
     }
 }
 

@@ -28,7 +28,9 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 用户未登录，访问受保护的资源
     UNAUTHORIZED("20002", "\uD83E\uDEE4无访问权限，请先登录呀！"),
     // 用户已登录，但是无权访问受保护的资源
-    FORBIDDEN("20004", "\uD83D\uDE0E演示账号仅支持查询操作哈！");
+    FORBIDDEN("20004", "\uD83D\uDE0E演示账号仅支持查询操作哈！"),
+    // 没有找到该用户
+    USERNAME_NOT_FOUND("20003","\uD83E\uDD72该用户不存在哦");
 
 
     // 异常码
