@@ -1,10 +1,13 @@
 package com.dakkk.dkblog.admin.service.impl;
 
-import com.dakkk.dkblog.admin.model.vo.UpdateAdminUserPasswordReqVO;
+import com.dakkk.dkblog.admin.model.vo.user.FindUserInfoRspVO;
+import com.dakkk.dkblog.admin.model.vo.user.UpdateAdminUserPasswordReqVO;
 import com.dakkk.dkblog.admin.service.AdminUserService;
 import com.dakkk.dkblog.common.domain.mapper.UserMapper;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.utils.Response;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +41,15 @@ public class AdminUserServiceImpl implements AdminUserService {
         int count = userMapper.updatePasswordByUsernameInt(username, encodePassword);
 
         return count == 1 ? Response.success():Response.fail(ResponseErrorCodeEnum.USERNAME_NOT_FOUND);
+    }
+
+    @Override
+    public Response findUserInfo() {
+        // 获取存储在 ThreadLocal 中的用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 拿到用户名
+        String username = authentication.getName();
+
+        return Response.success(FindUserInfoRspVO.builder().username(username).build());
     }
 }

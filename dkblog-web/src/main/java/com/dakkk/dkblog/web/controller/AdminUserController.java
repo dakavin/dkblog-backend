@@ -1,6 +1,6 @@
 package com.dakkk.dkblog.web.controller;
 
-import com.dakkk.dkblog.admin.model.vo.UpdateAdminUserPasswordReqVO;
+import com.dakkk.dkblog.admin.model.vo.user.UpdateAdminUserPasswordReqVO;
 import com.dakkk.dkblog.admin.service.AdminUserService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import com.dakkk.dkblog.common.utils.Response;
@@ -30,10 +30,17 @@ public class AdminUserController {
     private AdminUserService userService;
 
     @PostMapping("/password/update")
-    @ApiOperation("1——修改用户密码")
+    @ApiOperation("1-修改用户密码")
     @ApiOperationLog(description = "修改用户密码")
     public Response updatePassword(@RequestBody @Validated UpdateAdminUserPasswordReqVO
                                    updateAdminUserPasswordReqVO){
         return userService.updatePassword(updateAdminUserPasswordReqVO);
+    }
+
+    @PostMapping("/user/info")
+    @ApiOperation("2-获取用户信息")
+    @ApiOperationLog(description = "获取用户信息")
+    public Response findUserInfo(){
+        return userService.findUserInfo();
     }
 }

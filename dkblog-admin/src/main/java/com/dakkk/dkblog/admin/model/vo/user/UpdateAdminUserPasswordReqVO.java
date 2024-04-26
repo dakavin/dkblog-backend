@@ -1,4 +1,4 @@
-package com.dakkk.dkblog.admin.model.vo;
+package com.dakkk.dkblog.admin.model.vo.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
  *
  * @Create 2024/4/26 22:17
  * @Author dakkk
- * Description: 前端修改admin用户账户和密码的参数接受实体类
+ * Description: 前端修改admin用户账户和密码的入参
  */
 @Data
 @AllArgsConstructor

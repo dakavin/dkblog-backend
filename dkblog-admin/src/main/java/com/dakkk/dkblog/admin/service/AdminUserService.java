@@ -1,6 +1,6 @@
 package com.dakkk.dkblog.admin.service;
 
-import com.dakkk.dkblog.admin.model.vo.UpdateAdminUserPasswordReqVO;
+import com.dakkk.dkblog.admin.model.vo.user.UpdateAdminUserPasswordReqVO;
 import com.dakkk.dkblog.common.utils.Response;
 
 /**
@@ -16,4 +16,9 @@ public interface AdminUserService {
      * 修改密码
      */
     Response updatePassword(UpdateAdminUserPasswordReqVO updateAdminUserPasswordReqVO);
+
+    /**
+     * 获取当前登录用户信息
+     */
+    Response findUserInfo();
 }
