@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.*;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
@@ -38,6 +39,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     /**
      * 增加分类的方法
+     *
      * @param addCategoryReqVO 入参（增加分类的name）
      * @return 返回Response对象，只需要success即可
      */
@@ -58,7 +60,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         CategoryDO insertCategoryDo = CategoryDO.builder()
                 .name(categoryName.trim())
                 // 描述可以为空
-                .description(StringUtils.isNotBlank(categoryDesc)?categoryDesc:"暂时没有描述")
+                .description(StringUtils.isNotBlank(categoryDesc) ? categoryDesc : "暂时没有描述")
                 .build();
 
         // 执行 insert
@@ -69,6 +71,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     /**
      * 获取分类分页后的数据集合
+     *
      * @param findCategoryPageListReqVO 入参（current、size、name，startDate、endDate）
      * @return 出参（PageResponse对象，其中date数据为id、createTime、name的list集合）
      */
@@ -79,7 +82,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         Long size = findCategoryPageListReqVO.getSize();
 
         // 分页对象（查询第几页，每页多少数据）
-        Page<CategoryDO> page = new Page<>(current,size);
+        Page<CategoryDO> page = new Page<>(current, size);
 
         // 构建查询条件
         LambdaQueryWrapper<CategoryDO> lqw = new LambdaQueryWrapper<>();
@@ -90,11 +93,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
         lqw
                 // like 模块查询
-                .like(StringUtils.isNotBlank(name),CategoryDO::getName,name.trim())
+                .like(StringUtils.isNotBlank(name), CategoryDO::getName, name.trim())
                 // 创建日期 大于等于 起始日期
-                .ge(Objects.nonNull(startDate),CategoryDO::getCreateTime,startDate)
+                .ge(Objects.nonNull(startDate), CategoryDO::getCreateTime, startDate)
                 // 创建日期 小于等于 结束日期
-                .le(Objects.nonNull(endDate),CategoryDO::getCreateTime,endDate)
+                .le(Objects.nonNull(endDate), CategoryDO::getCreateTime, endDate)
                 // 按照创建日期降序排列
                 .orderByDesc(CategoryDO::getCreateTime);
 
@@ -104,7 +107,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
         // DO 转 VO
         List<FindCategoryPageListRspVO> vos = null;
-        if (!CollectionUtils.isEmpty(categoryDOS)){
+        if (!CollectionUtils.isEmpty(categoryDOS)) {
             vos = categoryDOS.stream()
                     .map(categoryDO -> FindCategoryPageListRspVO.builder()
                             .id(categoryDO.getId())
@@ -114,11 +117,12 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                             .build())
                     .collect(Collectors.toList());
         }
-        return PageResponse.success(categoryDOPage,vos);
+        return PageResponse.success(categoryDOPage, vos);
     }
 
     /**
      * 删除分类的方法
+     *
      * @param deleteCategoryReqVO 入参（删除的id）
      * @return 返回Response对象即可
      */
@@ -135,6 +139,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     /**
      * 创建文章时，在文章分类的下拉列表中展示分类的 文字描述 和 id
+     *
      * @return
      */
     @Override
@@ -145,7 +150,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         // DO 转 VO
         List<SelectRspVO> selectRspVOS = null;
         // 如果分类数据不为空
-        if (!CollectionUtils.isEmpty(categoryDOS)){
+        if (!CollectionUtils.isEmpty(categoryDOS)) {
             selectRspVOS = categoryDOS.stream()
                     .map(categoryDO -> SelectRspVO.builder()
                             .label(categoryDO.getName())
@@ -158,25 +163,37 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     /**
      * 修改分类的名称和描述
+     *
      * @param editCategoryReqVO
      * @return
      */
     @Override
     public Response updateCategory(UpdateCategoryReqVO updateCategoryReqVO) {
         Long id = updateCategoryReqVO.getId();
-        String categoryName = updateCategoryReqVO.getName();
+        String categoryName = updateCategoryReqVO.getName().trim();
         String categoryDesc = updateCategoryReqVO.getDescription();
 
+        // 目前修改的数据
+        CategoryDO categoryDOById = categoryMapper.selectById(id);
+        // 如果修改名称，查看数据库是否有同名的数据
+        CategoryDO categoryDOByName = categoryMapper.selectByName(categoryName);
+
+        // 先判断该分类名称是否已经存在，并且和修改的数据名称不一致
+        if (Objects.nonNull(categoryDOByName) && !StringUtils.equals(categoryDOById.getName(),categoryDOByName.getName())) {
+            log.warn("分类名称：{}，已存在", categoryName);
+            throw new BizException(ResponseErrorCodeEnum.CATEGORY_NAME_IS_EXISTED);
+        }
 
         // 构建DO类
         CategoryDO updateCategoryDo = CategoryDO.builder()
                 .id(id)
                 .name(categoryName.trim())
                 // 描述可以为空
-                .description(StringUtils.isNotBlank(categoryDesc)?categoryDesc:"暂时没有描述")
+                .description(StringUtils.isNotBlank(categoryDesc) ? categoryDesc : "暂时没有描述")
+                // 补充更新的时间
+                .updateTime(LocalDateTime.now())
                 .build();
-
-        // 执行 insert
+        // 执行 update
         categoryMapper.updateById(updateCategoryDo);
 
         return Response.success();
