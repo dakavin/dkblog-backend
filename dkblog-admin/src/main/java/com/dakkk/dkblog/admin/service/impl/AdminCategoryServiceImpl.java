@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,8 +86,8 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         LambdaQueryWrapper<CategoryDO> lqw = new LambdaQueryWrapper<>();
 
         String name = findCategoryPageListReqVO.getName();
-        LocalDate startDate = findCategoryPageListReqVO.getStartDate();
-        LocalDate endDate = findCategoryPageListReqVO.getEndDate();
+        LocalDateTime startDate = findCategoryPageListReqVO.getStartDate();
+        LocalDateTime endDate = findCategoryPageListReqVO.getEndDate();
 
         lqw
                 // like 模块查询
