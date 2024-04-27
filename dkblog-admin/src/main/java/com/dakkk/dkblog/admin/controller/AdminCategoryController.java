@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
@@ -44,5 +45,12 @@ public class AdminCategoryController {
     public PageResponse findCategoryList(@RequestBody @Validated FindCategoryPageListReqVO findCategoryPageListReqVO){
         System.out.println(findCategoryPageListReqVO);
         return categoryService.findCategoryList(findCategoryPageListReqVO);
+    }
+
+    @PostMapping("/category/delete")
+    @ApiOperation("3-删除某个id对应的分类")
+    @ApiOperationLog(description = "删除某个id对应的分类")
+    public Response deleteCategory(@RequestBody @Validated DeleteCategoryReqVO deleteCategoryReqVO){
+        return categoryService.deleteCategory(deleteCategoryReqVO);
     }
 }

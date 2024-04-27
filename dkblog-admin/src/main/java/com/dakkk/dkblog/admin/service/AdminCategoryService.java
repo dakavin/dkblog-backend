@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.service;
 
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
@@ -22,4 +23,9 @@ public interface AdminCategoryService {
      * 分类的分页数据查询
      */
     PageResponse findCategoryList(FindCategoryPageListReqVO findCategoryPageListReqVO);
+
+    /**
+     * 删除分类
+     */
+    Response deleteCategory(DeleteCategoryReqVO deleteCategoryReqVO);
 }

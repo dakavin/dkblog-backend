@@ -3,6 +3,7 @@ package com.dakkk.dkblog.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListRspVO;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
@@ -37,6 +38,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Resource
     private CategoryMapper categoryMapper;
 
+    /**
+     * 增加分类的方法
+     * @param addCategoryReqVO 入参（增加分类的name）
+     * @return 返回Response对象，只需要success即可
+     */
     @Override
     public Response addCategory(AddCategoryReqVO addCategoryReqVO) {
         String categoryName = addCategoryReqVO.getName();
@@ -59,6 +65,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         return Response.success();
     }
 
+    /**
+     * 获取分类分页后的数据集合
+     * @param findCategoryPageListReqVO 入参（current、size、name，startDate、endDate）
+     * @return 出参（PageResponse对象，其中date数据为id、createTime、name的list集合）
+     */
     @Override
     public PageResponse findCategoryList(FindCategoryPageListReqVO findCategoryPageListReqVO) {
         // 获取当前页，以及每页需要展示的数据数量
@@ -101,5 +112,21 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                     .collect(Collectors.toList());
         }
         return PageResponse.success(categoryDOPage,vos);
+    }
+
+    /**
+     * 删除分类的方法
+     * @param deleteCategoryReqVO 入参（删除的id）
+     * @return 返回Response对象即可
+     */
+    @Override
+    public Response deleteCategory(DeleteCategoryReqVO deleteCategoryReqVO) {
+        // 分类Id
+        Long categoryId = deleteCategoryReqVO.getId();
+
+        // 删除分类
+        categoryMapper.deleteById(categoryId);
+
+        return Response.success();
     }
 }
