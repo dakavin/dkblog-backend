@@ -30,7 +30,10 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 用户已登录，但是无权访问受保护的资源
     FORBIDDEN("20004", "\uD83D\uDE0E演示账号仅支持查询操作哈！"),
     // 没有找到该用户
-    USERNAME_NOT_FOUND("20003","\uD83E\uDD72该用户不存在哦");
+    USERNAME_NOT_FOUND("20003","\uD83E\uDD72该用户不存在哦"),
+    // 分类已存在
+    CATEGORY_NAME_IS_EXISTED("200005","该分类已存在，请勿重复添加！" );
+
 
 
     // 异常码
