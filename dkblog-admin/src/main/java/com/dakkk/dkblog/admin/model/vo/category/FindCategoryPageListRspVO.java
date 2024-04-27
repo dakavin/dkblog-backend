@@ -29,6 +29,10 @@ public class FindCategoryPageListRspVO {
      */
     private String name;
     /**
+     * 分类的描述
+     */
+    private String description;
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

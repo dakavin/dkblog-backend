@@ -26,4 +26,7 @@ public class AddCategoryReqVO {
     @NotBlank(message = "分类名称不能为空")
     @Length(min = 1, max = 20, message = "分类名称字数限制 1~20 之间")
     private String name;
+
+    @Length(max = 100, message = "分类描述字数限制 最大为100")
+    private String description;
 }

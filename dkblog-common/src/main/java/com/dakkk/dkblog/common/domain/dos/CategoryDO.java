@@ -1,25 +1,26 @@
 package com.dakkk.dkblog.common.domain.dos;
 
-import com.baomidou.mybatisplus.annotation.*;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * 文章分类表
- *
  * @TableName t_category
  */
-@TableName(value = "t_category")
+@TableName(value ="t_category")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 public class CategoryDO implements Serializable {
     /**
      * 分类id
@@ -31,6 +32,11 @@ public class CategoryDO implements Serializable {
      * 分类名称
      */
     private String name;
+
+    /**
+     * 分类的描述
+     */
+    private String description;
 
     /**
      * 创建时间

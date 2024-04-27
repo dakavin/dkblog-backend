@@ -7,13 +7,14 @@
     <resultMap id="BaseResultMap" type="com.dakkk.dkblog.common.domain.dos.CategoryDO">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,create_time,
-        update_time,is_deleted
+        id,name,description,
+        create_time,update_time,is_deleted
     </sql>
 </mapper>

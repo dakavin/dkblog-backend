@@ -15,13 +15,11 @@ import com.dakkk.dkblog.common.model.vo.SelectRspVO;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +47,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Override
     public Response addCategory(AddCategoryReqVO addCategoryReqVO) {
         String categoryName = addCategoryReqVO.getName();
+        String categoryDesc = addCategoryReqVO.getDescription();
 
         // 先判断该分类是否已经存在
         CategoryDO categoryDO = categoryMapper.selectByName(categoryName);
@@ -60,7 +59,10 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
         // 构建DO类
         CategoryDO insertCategoryDo = CategoryDO.builder()
-                .name(addCategoryReqVO.getName().trim()).build();
+                .name(categoryName.trim())
+                // 描述可以为空
+                .description(StringUtils.isNotBlank(categoryDesc)?categoryDesc:"暂时没有描述")
+                .build();
 
         // 执行 insert
         categoryMapper.insert(insertCategoryDo);
@@ -110,6 +112,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                     .map(categoryDO -> FindCategoryPageListRspVO.builder()
                             .id(categoryDO.getId())
                             .name(categoryDO.getName())
+                            .description(categoryDO.getDescription())
                             .createTime(categoryDO.getCreateTime())
                             .build())
                     .collect(Collectors.toList());
