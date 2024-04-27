@@ -11,9 +11,11 @@ import com.dakkk.dkblog.common.domain.dos.CategoryDO;
 import com.dakkk.dkblog.common.domain.mapper.CategoryMapper;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.exception.BizException;
+import com.dakkk.dkblog.common.model.vo.SelectRspVO;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -128,5 +130,28 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         categoryMapper.deleteById(categoryId);
 
         return Response.success();
+    }
+
+    /**
+     * 创建文章时，在文章分类的下拉列表中展示分类的 文字描述 和 id
+     * @return
+     */
+    @Override
+    public Response findCategorySelectList() {
+        // 查询所有分类
+        List<CategoryDO> categoryDOS = categoryMapper.selectList(null);
+
+        // DO 转 VO
+        List<SelectRspVO> selectRspVOS = null;
+        // 如果分类数据不为空
+        if (!CollectionUtils.isEmpty(categoryDOS)){
+            selectRspVOS = categoryDOS.stream()
+                    .map(categoryDO -> SelectRspVO.builder()
+                            .label(categoryDO.getName())
+                            .value(categoryDO.getId())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return Response.success(selectRspVOS);
     }
 }

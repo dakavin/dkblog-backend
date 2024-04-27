@@ -53,4 +53,11 @@ public class AdminCategoryController {
     public Response deleteCategory(@RequestBody @Validated DeleteCategoryReqVO deleteCategoryReqVO){
         return categoryService.deleteCategory(deleteCategoryReqVO);
     }
+
+    @PostMapping("/category/select/list")
+    @ApiOperation("4-创建文章时，获取分类下拉列表中的数据")
+    @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
+    public Response findCategorySelectList(){
+        return categoryService.findCategorySelectList();
+    }
 }
