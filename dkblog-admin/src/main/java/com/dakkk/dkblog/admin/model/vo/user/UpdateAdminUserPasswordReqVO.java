@@ -21,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel("修改用户密码 VO")
+@ApiModel("修改用户密码接口的入参VO")
 public class UpdateAdminUserPasswordReqVO {
     @NotBlank(message = "用户名不能为空")
     @ApiModelProperty("用户名")

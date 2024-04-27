@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.model.vo.user;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ApiModel("查询用户信息接口的响应VO")
 public class FindUserInfoRspVO {
     /**
      * 用户名

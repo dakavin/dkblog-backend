@@ -1,8 +1,10 @@
 package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
+import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,5 +36,13 @@ public class AdminCategoryController {
     @ApiOperationLog(description = "添加分类")
     public Response addCategory(@RequestBody @Validated AddCategoryReqVO addCategoryReqVO) {
         return categoryService.addCategory(addCategoryReqVO);
+    }
+
+    @PostMapping("/category/list")
+    @ApiOperation("2-获取分类的分页数据")
+    @ApiOperationLog(description = "获取分类的分页数据")
+    public PageResponse findCategoryList(@RequestBody @Validated FindCategoryPageListReqVO findCategoryPageListReqVO){
+        System.out.println(findCategoryPageListReqVO);
+        return categoryService.findCategoryList(findCategoryPageListReqVO);
     }
 }
