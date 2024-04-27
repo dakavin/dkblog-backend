@@ -3,6 +3,7 @@ package com.dakkk.dkblog.admin.controller;
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.UpdateCategoryReqVO;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import com.dakkk.dkblog.common.utils.PageResponse;
@@ -59,5 +60,12 @@ public class AdminCategoryController {
     @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
     public Response findCategorySelectList(){
         return categoryService.findCategorySelectList();
+    }
+
+    @PostMapping("/category/update")
+    @ApiOperation("5-修改分类")
+    @ApiOperationLog(description = "修改分类")
+    public Response updateCategory(@RequestBody @Validated UpdateCategoryReqVO updateCategoryReqVO) {
+        return categoryService.updateCategory(updateCategoryReqVO);
     }
 }

@@ -2,10 +2,7 @@ package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
-import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
-import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
-import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListRspVO;
+import com.dakkk.dkblog.admin.model.vo.category.*;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
 import com.dakkk.dkblog.common.domain.dos.CategoryDO;
 import com.dakkk.dkblog.common.domain.mapper.CategoryMapper;
@@ -157,5 +154,31 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                     .collect(Collectors.toList());
         }
         return Response.success(selectRspVOS);
+    }
+
+    /**
+     * 修改分类的名称和描述
+     * @param editCategoryReqVO
+     * @return
+     */
+    @Override
+    public Response updateCategory(UpdateCategoryReqVO updateCategoryReqVO) {
+        Long id = updateCategoryReqVO.getId();
+        String categoryName = updateCategoryReqVO.getName();
+        String categoryDesc = updateCategoryReqVO.getDescription();
+
+
+        // 构建DO类
+        CategoryDO updateCategoryDo = CategoryDO.builder()
+                .id(id)
+                .name(categoryName.trim())
+                // 描述可以为空
+                .description(StringUtils.isNotBlank(categoryDesc)?categoryDesc:"暂时没有描述")
+                .build();
+
+        // 执行 insert
+        categoryMapper.updateById(updateCategoryDo);
+
+        return Response.success();
     }
 }

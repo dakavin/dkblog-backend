@@ -2,6 +2,7 @@ package com.dakkk.dkblog.admin.service;
 
 import com.dakkk.dkblog.admin.model.vo.category.AddCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.DeleteCategoryReqVO;
+import com.dakkk.dkblog.admin.model.vo.category.UpdateCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.category.FindCategoryPageListReqVO;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
@@ -32,4 +33,8 @@ public interface AdminCategoryService {
      * 获取文章分类的 Select 列表数据
      */
     Response findCategorySelectList();
+    /**
+     * 修改分类
+     */
+    Response updateCategory(UpdateCategoryReqVO updateCategoryReqVO);
 }
