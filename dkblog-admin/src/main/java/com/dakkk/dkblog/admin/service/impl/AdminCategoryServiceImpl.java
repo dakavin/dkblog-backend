@@ -114,6 +114,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                             .name(categoryDO.getName())
                             .description(categoryDO.getDescription())
                             .createTime(categoryDO.getCreateTime())
+                            .updateTime(categoryDO.getUpdateTime())
                             .build())
                     .collect(Collectors.toList());
         }
