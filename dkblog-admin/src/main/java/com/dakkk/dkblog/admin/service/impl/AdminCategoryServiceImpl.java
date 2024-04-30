@@ -1,7 +1,6 @@
 package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.*;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
@@ -179,11 +178,18 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         // 如果修改名称，查看数据库是否有同名的数据
         CategoryDO categoryDOByName = categoryMapper.selectByName(categoryName);
 
-        // 先判断该分类名称是否已经存在，并且和修改的数据名称不一致
+        // 先判断用户是否没有修改
+        if (StringUtils.equals(categoryName,categoryDOById.getName()) &&
+        StringUtils.equals(categoryDesc,categoryDOById.getDescription())){
+            return Response.fail("用户未做任何修改！");
+        }
+
+        // 再判断该分类名称是否已经存在，并且和修改的数据名称不一致
         if (Objects.nonNull(categoryDOByName) && !StringUtils.equals(categoryDOById.getName(),categoryDOByName.getName())) {
             log.warn("分类名称：{}，已存在", categoryName);
             throw new BizException(ResponseErrorCodeEnum.CATEGORY_NAME_IS_EXISTED);
         }
+
 
         // 构建DO类
         CategoryDO updateCategoryDo = CategoryDO.builder()
