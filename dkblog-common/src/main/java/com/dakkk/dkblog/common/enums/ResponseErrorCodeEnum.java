@@ -32,7 +32,9 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 没有找到该用户
     USERNAME_NOT_FOUND("20003","\uD83E\uDD72该用户不存在哦"),
     // 分类已存在
-    CATEGORY_NAME_IS_EXISTED("200005","该分类已存在，请勿重复添加！" );
+    CATEGORY_NAME_IS_EXISTED("200005","该分类已存在，请勿重复添加！" ),
+    // 标签已存在
+    TAG_NAME_IS_EXISTED("200006","该标签已存在，请勿重复添加！" );
 
 
 

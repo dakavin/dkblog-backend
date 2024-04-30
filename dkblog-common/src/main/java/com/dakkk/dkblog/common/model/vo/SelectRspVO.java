@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  *
  * @Create 2024/4/27 16:57
  * @Author dakkk
- * Description: 创建文章的时候，下拉列表选择文章的分类时，文章分类的返参
+ * Description: 创建文章的时候，下拉列表选择文章的分类或标签时，文章分类或标签的返参
  */
 @Data
 @AllArgsConstructor
