@@ -1,12 +1,16 @@
 package com.dakkk.dkblog.admin.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListRspVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
 import com.dakkk.dkblog.common.domain.dos.*;
 import com.dakkk.dkblog.common.domain.mapper.*;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.exception.BizException;
+import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -193,5 +197,35 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         articleTagRefMapper.deleteByArticleId(ArticleId);
 
         return Response.success();
+    }
+
+    @Override
+    public Response findArticlePageList(FindArticlePageListReqVO findArticlePageListReqVO) {
+        // 获取当前页、以及每页需要展示的数据数量
+        Long current = findArticlePageListReqVO.getCurrent();
+        Long size = findArticlePageListReqVO.getSize();
+        String title = findArticlePageListReqVO.getTitle();
+        LocalDateTime startTime = findArticlePageListReqVO.getStartDateTime();
+        LocalDateTime endTime = findArticlePageListReqVO.getEndDateTime();
+
+        // 执行分页查询
+        Page<ArticleDO> articleDOPage = articleMapper.selectPageList(current, size, title, startTime, endTime);
+        // 获取实际内容
+        List<ArticleDO> articleDOS = articleDOPage.getRecords();
+
+        // DO 转 VO
+        List<FindArticlePageListRspVO> vos = null;
+        if (!CollectionUtils.isEmpty(articleDOS)) {
+            vos = articleDOS.stream()
+                    .map(articleDO -> FindArticlePageListRspVO.builder()
+                            .id(articleDO.getId())
+                            .title(articleDO.getTitle())
+                            .cover(articleDO.getCover())
+                            .createTime(articleDO.getCreateTime())
+                            .updateTime(articleDO.getUpdateTime())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return PageResponse.success(articleDOPage, vos);
     }
 }

@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
@@ -45,5 +46,12 @@ public class AdminArticleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response deleteArticle(@RequestBody @Validated DeleteArticleReqVO deleteArticleReqVO) {
         return adminArticleService.deleteArticle(deleteArticleReqVO);
+    }
+
+    @PostMapping("/list")
+    @ApiOperation("3-文章分页数据")
+    @ApiOperationLog(description = "文章分页数据")
+    public Response findArticlePageList(@RequestBody @Validated FindArticlePageListReqVO findArticlePageListReqVO) {
+        return adminArticleService.findArticlePageList(findArticlePageListReqVO);
     }
 }

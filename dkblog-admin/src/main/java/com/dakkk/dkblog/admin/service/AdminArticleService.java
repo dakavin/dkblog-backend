@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.service;
 
 import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.common.utils.Response;
 
@@ -22,4 +23,9 @@ public interface AdminArticleService {
      * 删除文章
      */
     Response deleteArticle(DeleteArticleReqVO deleteArticleReqVO);
+
+    /**
+     * 分页查询文章
+     */
+    Response findArticlePageList(FindArticlePageListReqVO findArticlePageListReqVO);
 }
