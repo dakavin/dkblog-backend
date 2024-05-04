@@ -6,40 +6,53 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * ClassName: FindArticlePageListRspVO
+ * ClassName: FindArticleDetailRspVO
  * Package: com.dakkk.dkblog.admin.model.vo.article
  *
- * @Create 2024/5/4 15:05
+ * @Create 2024/5/4 15:33
  * @Author dakkk
  * Description:
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class FindArticlePageListRspVO {
+public class FindArticleDetailRspVO {
     /**
      * 文章 ID
      */
     private Long id;
+
     /**
      * 文章标题
      */
     private String title;
+
     /**
-     * 文章方面
+     * 文章封面
      */
     private String cover;
+
     /**
-     * 文章发布时间
+     * 文章内容
      */
-    private LocalDateTime createTime;
+    private String content;
+
     /**
-     * 文章更新时间
+     * 分类 ID
      */
-    private LocalDateTime updateTime;
+    private Long categoryId;
+
+    /**
+     * 标签 ID 集合
+     */
+    private List<Long> tagIds;
+
+    /**
+     * 摘要
+     */
+    private String summary;
 }

@@ -5,6 +5,8 @@ import com.dakkk.dkblog.common.config.InsertBatchMapper;
 import com.dakkk.dkblog.common.domain.dos.ArticleCategoryRefDO;
 import com.dakkk.dkblog.common.domain.dos.ArticleTagRefDO;
 
+import java.util.List;
+
 /**
  * @author mikey
  * @description 针对表【t_article_tag_ref(文章对应标签关联表)】的数据库操作Mapper
@@ -18,6 +20,13 @@ public interface ArticleTagRefMapper extends InsertBatchMapper<ArticleTagRefDO> 
     default int deleteByArticleId(Long articleId) {
         return delete(Wrappers.<ArticleTagRefDO>lambdaQuery()
                 .eq(ArticleTagRefDO::getArticleId, articleId));
+    }
+    /**
+     * 根据文章 ID 查询文章标签
+     */
+    default List<ArticleTagRefDO> selectByArticleId(Long articleId){
+        return selectList(Wrappers.<ArticleTagRefDO>lambdaQuery()
+                .eq(ArticleTagRefDO::getArticleId,articleId));
     }
 }
 

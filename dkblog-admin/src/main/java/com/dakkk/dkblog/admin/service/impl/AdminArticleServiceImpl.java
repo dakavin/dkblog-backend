@@ -1,10 +1,8 @@
 package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
-import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
-import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListRspVO;
-import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
+import com.dakkk.dkblog.admin.convert.ArticleDetailConvert;
+import com.dakkk.dkblog.admin.model.vo.article.*;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
 import com.dakkk.dkblog.common.domain.dos.*;
 import com.dakkk.dkblog.common.domain.mapper.*;
@@ -227,5 +225,37 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                     .collect(Collectors.toList());
         }
         return PageResponse.success(articleDOPage, vos);
+    }
+
+    @Override
+    public Response findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
+        Long articleId = findArticleDetailReqVO.getId();
+
+        // 获取文章相关信息
+        ArticleDO articleDO = articleMapper.selectById(articleId);
+
+        if (Objects.isNull(articleDO)){
+            log.warn("==> 查询的文章不存在，articleId：{}",articleId);
+            throw new BizException(ResponseErrorCodeEnum.ARTICLE_NOT_FOUND);
+        }
+
+        // 获取文章的内容
+        ArticleContentDO articleContentDO = articleContentMapper.selectBtArticleId(articleId);
+
+        // 获取文章的分类
+        ArticleCategoryRefDO articleCategoryRefDO = articleCategoryRefMapper.selectByArticleId(articleId);
+
+        // 获取其文章的标签
+        List<ArticleTagRefDO> articleTagRefDOS = articleTagRefMapper.selectByArticleId(articleId);
+        List<Long> tagIds = articleTagRefDOS.stream().map(ArticleTagRefDO::getTagId).collect(Collectors.toList());
+
+        // DO 转 VO
+        System.out.println(ArticleDetailConvert.INSTANCE);
+        FindArticleDetailRspVO vo = ArticleDetailConvert.INSTANCE.convertDO2VO(articleDO);
+        vo.setContent(articleContentDO.getContent());
+        vo.setCategoryId(articleCategoryRefDO.getCategoryId());
+        vo.setTagIds(tagIds);
+
+        return Response.success(vo);
     }
 }

@@ -19,6 +19,14 @@ public interface ArticleCategoryRefMapper extends BaseMapper<ArticleCategoryRefD
         return delete(Wrappers.<ArticleCategoryRefDO>lambdaQuery()
                 .eq(ArticleCategoryRefDO::getArticleId, articleId));
     }
+
+    /**
+     * 根据文章 ID 查询文章分类
+     */
+    default ArticleCategoryRefDO selectByArticleId(Long articleId){
+        return selectOne(Wrappers.<ArticleCategoryRefDO>lambdaQuery()
+                .eq(ArticleCategoryRefDO::getArticleId,articleId));
+    }
 }
 
 

@@ -36,7 +36,9 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 标签已存在
     TAG_NAME_IS_EXISTED("200006","该标签已存在，请勿重复添加！" ),
     // 发布文章时，对应的标签不存在
-    CATEGORY_NOT_EXISTED("200007","提交的分类不存在！" );
+    CATEGORY_NOT_EXISTED("200007","提交的分类不存在！" ),
+    // 文章不存在
+    ARTICLE_NOT_FOUND("20010","文章不存在！" );
 
 
 

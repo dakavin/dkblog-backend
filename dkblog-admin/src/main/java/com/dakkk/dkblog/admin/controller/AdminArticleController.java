@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.FindArticleDetailReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
@@ -53,5 +54,12 @@ public class AdminArticleController {
     @ApiOperationLog(description = "文章分页数据")
     public Response findArticlePageList(@RequestBody @Validated FindArticlePageListReqVO findArticlePageListReqVO) {
         return adminArticleService.findArticlePageList(findArticlePageListReqVO);
+    }
+
+    @PostMapping("/detail")
+    @ApiOperation("4-文章详情")
+    @ApiOperationLog(description = "文章详情")
+    public Response findArticleDetail(@RequestBody @Validated FindArticleDetailReqVO findArticleDetailReqVO) {
+        return adminArticleService.findArticleDetail(findArticleDetailReqVO);
     }
 }
