@@ -258,4 +258,58 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         return Response.success(vo);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response updateArticle(UpdateArticleReqVO updateArticleReqVO) {
+        Long articleId = updateArticleReqVO.getId();
+
+        // VO 转 ArticleDO，并更新
+        ArticleDO articleDO = ArticleDO.builder()
+                .id(articleId)
+                .title(updateArticleReqVO.getTitle())
+                .cover(updateArticleReqVO.getCover())
+                .summary(updateArticleReqVO.getSummary())
+                .updateTime(LocalDateTime.now())
+                .build();
+        int count = articleMapper.updateById(articleDO);
+
+        // 判断更新是否成功，来判断该文章是否存在
+        if (count == 0){
+            log.warn("==> 该文章不存在，articleId：{}",articleId);
+            throw new BizException(ResponseErrorCodeEnum.ARTICLE_NOT_FOUND);
+        }
+
+        // VO 转 ArticleContentDO，并更新
+        ArticleContentDO articleContentDO = ArticleContentDO.builder()
+                .articleId(articleId)
+                .content(updateArticleReqVO.getContent())
+                .build();
+        articleContentMapper.updateByArticleId(articleContentDO);
+
+        // 更新文章分类
+        Long categoryId = updateArticleReqVO.getCategoryId();
+        // 校验分类是否存在
+        CategoryDO categoryDO = categoryMapper.selectById(categoryId);
+        if (Objects.isNull(categoryDO)){
+            log.warn("==> 分类不存在，categoryId：{}",categoryId);
+            throw new BizException(ResponseErrorCodeEnum.CATEGORY_NOT_EXISTED);
+        }
+
+        // 先删除该文章关联的分类记录，再插入
+        articleCategoryRefMapper.deleteByArticleId(articleId);
+        ArticleCategoryRefDO articleCategoryRefDO = ArticleCategoryRefDO.builder()
+                .articleId(articleId)
+                .categoryId(categoryId)
+                .build();
+        articleCategoryRefMapper.insert(articleCategoryRefDO);
+
+        // 保存文章关联的标签集合
+        // 先删除文章对应的标签
+        articleTagRefMapper.deleteByArticleId(articleId);
+        List<String> publishTags = updateArticleReqVO.getTags();
+        insertTags(articleId,publishTags);
+
+        return Response.success();
+    }
 }

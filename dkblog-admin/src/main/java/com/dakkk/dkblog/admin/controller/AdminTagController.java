@@ -11,6 +11,7 @@ import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,7 @@ public class AdminTagController {
     @PostMapping("/tag/add")
     @ApiOperation("1-添加标签")
     @ApiOperationLog(description = "添加标签")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response addTag(@RequestBody @Validated AddTagReqVO addTagReqVO) {
         return tagService.addTag(addTagReqVO);
     }
@@ -52,6 +54,7 @@ public class AdminTagController {
     @PostMapping("/tag/delete")
     @ApiOperation("3-删除某个id对应的标签")
     @ApiOperationLog(description = "删除某个id对应的标签")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response deleteTag(@RequestBody @Validated DeleteTagReqVO deleteTagReqVO){
         return tagService.deleteTag(deleteTagReqVO);
     }
@@ -66,6 +69,7 @@ public class AdminTagController {
     @PostMapping("/tag/update")
     @ApiOperation("5-修改分类")
     @ApiOperationLog(description = "修改分类")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response updateTag(@RequestBody @Validated UpdateTagReqVO updateTagReqVO) {
         return tagService.updateTag(updateTagReqVO);
     }

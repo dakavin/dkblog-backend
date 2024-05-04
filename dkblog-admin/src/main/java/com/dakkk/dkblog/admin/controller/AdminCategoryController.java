@@ -10,6 +10,7 @@ import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class AdminCategoryController {
     @PostMapping("/category/add")
     @ApiOperation("1-添加分类")
     @ApiOperationLog(description = "添加分类")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response addCategory(@RequestBody @Validated AddCategoryReqVO addCategoryReqVO) {
         return categoryService.addCategory(addCategoryReqVO);
     }
@@ -51,6 +53,7 @@ public class AdminCategoryController {
     @PostMapping("/category/delete")
     @ApiOperation("3-删除某个id对应的分类")
     @ApiOperationLog(description = "删除某个id对应的分类")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response deleteCategory(@RequestBody @Validated DeleteCategoryReqVO deleteCategoryReqVO){
         return categoryService.deleteCategory(deleteCategoryReqVO);
     }
@@ -65,6 +68,7 @@ public class AdminCategoryController {
     @PostMapping("/category/update")
     @ApiOperation("5-修改分类")
     @ApiOperationLog(description = "修改分类")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Response updateCategory(@RequestBody @Validated UpdateCategoryReqVO updateCategoryReqVO) {
         return categoryService.updateCategory(updateCategoryReqVO);
     }

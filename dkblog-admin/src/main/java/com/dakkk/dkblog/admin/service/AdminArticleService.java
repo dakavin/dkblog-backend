@@ -1,9 +1,6 @@
 package com.dakkk.dkblog.admin.service;
 
-import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
-import com.dakkk.dkblog.admin.model.vo.article.FindArticleDetailReqVO;
-import com.dakkk.dkblog.admin.model.vo.article.FindArticlePageListReqVO;
-import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
+import com.dakkk.dkblog.admin.model.vo.article.*;
 import com.dakkk.dkblog.common.utils.Response;
 
 /**
@@ -34,4 +31,9 @@ public interface AdminArticleService {
      * 查询文章详情接口
      */
     Response findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO);
+
+    /**
+     * 更新文章
+     */
+    Response updateArticle(UpdateArticleReqVO updateArticleReqVO);
 }
