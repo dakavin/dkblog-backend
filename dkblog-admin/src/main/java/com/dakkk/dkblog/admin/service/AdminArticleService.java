@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.service;
 
+import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.common.utils.Response;
 
@@ -16,4 +17,9 @@ public interface AdminArticleService {
      * 发布文章
      */
     Response publishArticle(PublishArticleReqVO publishArticleReqVO);
+
+    /**
+     * 删除文章
+     */
+    Response deleteArticle(DeleteArticleReqVO deleteArticleReqVO);
 }

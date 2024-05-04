@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.service.impl;
 
+import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
 import com.dakkk.dkblog.common.domain.dos.*;
@@ -172,4 +173,25 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         }
     }
 
+    /**
+     * 删除文章
+     *
+     * @param ArticleId 文章Id
+     * @return 统一返回Response对象
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response deleteArticle(DeleteArticleReqVO deleteArticleReqVO) {
+        Long ArticleId = deleteArticleReqVO.getId();
+        // 1. 删除文章
+        articleMapper.deleteById(ArticleId);
+        // 2. 删除文章内容
+        articleContentMapper.deleteByArticleId(ArticleId);
+        // 3. 删除文章-分类关联记录
+        articleCategoryRefMapper.deleteByArticleId(ArticleId);
+        // 4. 删除文章-标签关联记录
+        articleTagRefMapper.deleteByArticleId(ArticleId);
+
+        return Response.success();
+    }
 }

@@ -3,6 +3,8 @@ package com.dakkk.dkblog.common.domain.mapper;
 import com.dakkk.dkblog.common.domain.dos.ArticleDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.sql.Wrapper;
+
 /**
 * @author mikey
 * @description 针对表【t_article(文章表)】的数据库操作Mapper
@@ -10,7 +12,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.dakkk.dkblog.common.domain.dos.ArticleDO
 */
 public interface ArticleMapper extends BaseMapper<ArticleDO> {
-
 }
 
 

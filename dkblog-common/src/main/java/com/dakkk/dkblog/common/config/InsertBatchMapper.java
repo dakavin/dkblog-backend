@@ -14,6 +14,6 @@ import java.util.List;
  * Description:
  */
 public interface InsertBatchMapper<T> extends BaseMapper<T> {
-    // 批量插入方法
+    // 批量插入方法，注意方法名称不能写错
     int insertBatchSomeColumn(@Param("list") List<T> batchList);
 }

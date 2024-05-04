@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "发布文章 VO")
+@ApiModel(value = "发布文章接口的入参VO")
 public class PublishArticleReqVO {
     @NotBlank(message = "文章标题不能为空")
     @Length(min = 1, max = 40, message = "文章标题字数需要在 1~40 之间")

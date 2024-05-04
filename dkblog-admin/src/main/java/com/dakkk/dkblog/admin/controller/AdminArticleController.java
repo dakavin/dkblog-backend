@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.controller;
 
+import com.dakkk.dkblog.admin.model.vo.article.DeleteArticleReqVO;
 import com.dakkk.dkblog.admin.model.vo.article.PublishArticleReqVO;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
@@ -25,7 +26,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("article")
-@Api(tags="Admin 文章模块")
+@Api(tags = "Admin 文章模块")
 public class AdminArticleController {
     @Resource
     AdminArticleService adminArticleService;
@@ -34,7 +35,15 @@ public class AdminArticleController {
     @ApiOperation("1-文章发布")
     @ApiOperationLog(description = "文章发布")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Response publishArticle(@RequestBody @Validated PublishArticleReqVO publishArticleReqVO){
+    public Response publishArticle(@RequestBody @Validated PublishArticleReqVO publishArticleReqVO) {
         return adminArticleService.publishArticle(publishArticleReqVO);
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation("2-文章删除")
+    @ApiOperationLog(description = "文章删除")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Response deleteArticle(@RequestBody @Validated DeleteArticleReqVO deleteArticleReqVO) {
+        return adminArticleService.deleteArticle(deleteArticleReqVO);
     }
 }
