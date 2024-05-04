@@ -11,7 +11,7 @@ spring:
             maximum-pool-size: 20
             auto-commit: true
             idle-timeout: 30000
-            pool-name: Weblog-HikariCP
+            pool-name: dkblog-HikariCP
             max-lifetime: 1800000
             connection-timeout: 30000
             connection-test-query: SELECT 1

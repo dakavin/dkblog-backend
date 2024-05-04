@@ -1,7 +1,7 @@
 package com.dakkk.dkblog.common.domain.mapper;
 
+import com.dakkk.dkblog.common.config.InsertBatchMapper;
 import com.dakkk.dkblog.common.domain.dos.ArticleTagRefDO;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
 * @author mikey
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-04-30 15:13:07
 * @Entity com.dakkk.dkblog.common.domain.dos.ArticleTagRefDO
 */
-public interface ArticleTagRefMapper extends BaseMapper<ArticleTagRefDO> {
+public interface ArticleTagRefMapper extends InsertBatchMapper<ArticleTagRefDO> {
 
 }
 
