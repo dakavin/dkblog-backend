@@ -217,6 +217,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
             vos = articleDOS.stream()
                     .map(articleDO -> FindArticlePageListRspVO.builder()
                             .id(articleDO.getId())
+                            .summary(articleDO.getSummary())
                             .title(articleDO.getTitle())
                             .cover(articleDO.getCover())
                             .createTime(articleDO.getCreateTime())

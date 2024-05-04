@@ -29,13 +29,13 @@ import javax.annotation.Resource;
  * Description:
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/tag")
 @Api(tags = "Admin 标签模块")
 public class AdminTagController {
     @Resource
     private AdminTagService tagService;
 
-    @PostMapping("/tag/add")
+    @PostMapping("/add")
     @ApiOperation("1-添加标签")
     @ApiOperationLog(description = "添加标签")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -43,7 +43,7 @@ public class AdminTagController {
         return tagService.addTag(addTagReqVO);
     }
 
-    @PostMapping("/tag/list")
+    @PostMapping("/list")
     @ApiOperation("2-获取标签的分页数据")
     @ApiOperationLog(description = "获取标签的分页数据")
     public PageResponse findTagList(@RequestBody @Validated FindTagPageListReqVO findTagPageListReqVO){
@@ -51,7 +51,7 @@ public class AdminTagController {
         return tagService.findTagList(findTagPageListReqVO);
     }
 
-    @PostMapping("/tag/delete")
+    @PostMapping("/delete")
     @ApiOperation("3-删除某个id对应的标签")
     @ApiOperationLog(description = "删除某个id对应的标签")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -59,14 +59,14 @@ public class AdminTagController {
         return tagService.deleteTag(deleteTagReqVO);
     }
 
-    @PostMapping("/tag/select/list")
+    @PostMapping("/select/list")
     @ApiOperation("4-创建文章时，获取分类下拉列表中的数据")
     @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
     public Response findTagSelectList(){
         return tagService.findTagSelectList();
     }
 
-    @PostMapping("/tag/update")
+    @PostMapping("/update")
     @ApiOperation("5-修改分类")
     @ApiOperationLog(description = "修改分类")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

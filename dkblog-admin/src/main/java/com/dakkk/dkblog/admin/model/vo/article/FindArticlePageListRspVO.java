@@ -27,6 +27,10 @@ public class FindArticlePageListRspVO {
      */
     private Long id;
     /**
+     * 文章摘要
+     */
+    private String summary;
+    /**
      * 文章标题
      */
     private String title;

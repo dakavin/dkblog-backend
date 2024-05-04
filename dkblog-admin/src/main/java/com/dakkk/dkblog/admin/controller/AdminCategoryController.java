@@ -28,13 +28,13 @@ import javax.annotation.Resource;
  * Description:
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/category")
 @Api(tags = "Admin 分类模块")
 public class AdminCategoryController {
     @Resource
     private AdminCategoryService categoryService;
 
-    @PostMapping("/category/add")
+    @PostMapping("/add")
     @ApiOperation("1-添加分类")
     @ApiOperationLog(description = "添加分类")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -42,7 +42,7 @@ public class AdminCategoryController {
         return categoryService.addCategory(addCategoryReqVO);
     }
 
-    @PostMapping("/category/list")
+    @PostMapping("/list")
     @ApiOperation("2-获取分类的分页数据")
     @ApiOperationLog(description = "获取分类的分页数据")
     public PageResponse findCategoryList(@RequestBody @Validated FindCategoryPageListReqVO findCategoryPageListReqVO){
@@ -50,7 +50,7 @@ public class AdminCategoryController {
         return categoryService.findCategoryList(findCategoryPageListReqVO);
     }
 
-    @PostMapping("/category/delete")
+    @PostMapping("/delete")
     @ApiOperation("3-删除某个id对应的分类")
     @ApiOperationLog(description = "删除某个id对应的分类")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -58,14 +58,14 @@ public class AdminCategoryController {
         return categoryService.deleteCategory(deleteCategoryReqVO);
     }
 
-    @PostMapping("/category/select/list")
+    @PostMapping("/select/list")
     @ApiOperation("4-创建文章时，获取分类下拉列表中的数据")
     @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
     public Response findCategorySelectList(){
         return categoryService.findCategorySelectList();
     }
 
-    @PostMapping("/category/update")
+    @PostMapping("/update")
     @ApiOperation("5-修改分类")
     @ApiOperationLog(description = "修改分类")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

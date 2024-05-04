@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * Description:
  */
 @RestController
-@RequestMapping("article")
+@RequestMapping("/admin/article")
 @Api(tags = "Admin 文章模块")
 public class AdminArticleController {
     @Resource
