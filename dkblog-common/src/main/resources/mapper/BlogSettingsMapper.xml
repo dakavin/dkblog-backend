@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dakkk.dkblog.common.domain.mapper.BlogSettingsMapper">
+
+    <resultMap id="BaseResultMap" type="com.dakkk.dkblog.common.domain.dos.BlogSettingsDO">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="logo" column="logo" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="author" column="author" jdbcType="VARCHAR"/>
+            <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="giteeHomepage" column="gitee_homepage" jdbcType="VARCHAR"/>
+            <result property="githubHomepage" column="github_homepage" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="otherHomepage" column="other_homepage" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,logo,name,
+        author,introduction,avatar,
+        gitee_homepage,github_homepage,email,
+        other_homepage
+    </sql>
+</mapper>
