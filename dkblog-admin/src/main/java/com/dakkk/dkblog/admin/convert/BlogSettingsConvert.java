@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.convert;
 
+import com.dakkk.dkblog.admin.model.vo.blogsettings.FindBlogSettingsRspVO;
 import com.dakkk.dkblog.admin.model.vo.blogsettings.UpdateBlogSettingsReqVO;
 import com.dakkk.dkblog.common.domain.dos.BlogSettingsDO;
 import org.mapstruct.Mapper;
@@ -24,4 +25,9 @@ public interface BlogSettingsConvert {
      * VO 转 DO
      */
     BlogSettingsDO convertVO2DO(UpdateBlogSettingsReqVO bean);
+
+    /**
+     * DO 转 VO
+     */
+    FindBlogSettingsRspVO convertDO2VO(BlogSettingsDO bean);
 }
