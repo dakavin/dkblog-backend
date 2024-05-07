@@ -5,6 +5,12 @@ spring:
     jackson:
         # 设置后台对于参数为 null 的值，不返回给前台（看数据情况选择）
         # default-property-inclusion: non_null
+    servlet:
+        multipart:
+            # 限制单个上传文件的最大大小为 10MB。如果上传的文件大小超过这个值，将会被拒绝上传。
+            max-file-size: 10MB
+            # 限制整个上传请求的最大大小为 10MB。这包括所有上传文件的大小之和。如果请求总大小超过这个值，将会被拒绝。
+            max-request-size: 10MB
 jwt:
     # 签发人
     issuer: dakkkk

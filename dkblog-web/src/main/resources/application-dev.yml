@@ -19,3 +19,8 @@ spring:
       user:
           name: admin
           password: 123456
+minio:
+    endpoint: http://127.0.0.1:9000
+    accessKey: dakkk
+    secretKey: abc123456
+    bucketName: dkblog

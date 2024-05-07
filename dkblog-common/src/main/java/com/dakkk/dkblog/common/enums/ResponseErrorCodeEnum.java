@@ -38,7 +38,9 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 发布文章时，对应的标签不存在
     CATEGORY_NOT_EXISTED("200007","提交的分类不存在！" ),
     // 文章不存在
-    ARTICLE_NOT_FOUND("20010","文章不存在！" );
+    ARTICLE_NOT_FOUND("20008","文章不存在！" ),
+    // 上传文件失败
+    FILE_UPLOAD_FAILED("20009","上传文件失败" );
 
 
 

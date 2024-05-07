@@ -54,7 +54,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <p6spy.version>3.9.1</p6spy.version>
         <jjwt.version>0.11.2</jjwt.version>
-        <minio.version>8.5.7</minio.version>
+        <minio.version>8.2.1</minio.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
@@ -136,6 +136,11 @@
             </dependency>
 
             <!-- 对象存储 Minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
 
             <!-- Mapstruct 属性映射 -->
             <dependency>
