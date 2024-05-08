@@ -56,7 +56,7 @@ public class AdminTagController {
         return tagService.deleteTag(deleteTagReqVO);
     }
 
-    @PostMapping("/tag/search")
+    @PostMapping("/search")
     @ApiOperation("4-创建文章时，获取分类下拉列表中的数据")
     @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
     public Response searchTags(@RequestBody @Validated SearchTagsReqVO searchTagsReqVO) {
