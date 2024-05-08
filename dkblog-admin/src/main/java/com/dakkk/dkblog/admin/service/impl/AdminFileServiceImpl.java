@@ -7,6 +7,7 @@ import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.exception.BizException;
 import com.dakkk.dkblog.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +32,6 @@ public class AdminFileServiceImpl implements AdminFileService {
         try {
             // 上传文件
             String url = minioUtil.uploadFile(file);
-
             // 构建成功返参，将图片的访问链接返回
             return Response.success(UploadFileRspVO.builder().url(url).build());
         } catch (Exception e) {
