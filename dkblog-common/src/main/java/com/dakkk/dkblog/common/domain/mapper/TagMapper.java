@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dakkk.dkblog.common.domain.dos.TagDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
 * @author mikey
 * @description 针对表【t_tag(文章标签表)】的数据库操作Mapper
@@ -20,6 +22,18 @@ public interface TagMapper extends BaseMapper<TagDO> {
         lqw.eq(TagDO::getName,tagName);
         // 执行查询
         return selectOne(lqw);
+    }
+
+    /**
+     * 根据标签名 模糊查询
+     */
+    default List<TagDO> selectByKey(String key){
+        LambdaQueryWrapper<TagDO> lqw = new LambdaQueryWrapper<>();
+
+        // 构造模糊查询条件
+        lqw.like(TagDO::getName,key).orderByDesc(TagDO::getCreateTime);
+
+        return selectList(lqw);
     }
 }
 

@@ -1,10 +1,7 @@
 package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.category.UpdateCategoryReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.AddTagReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.DeleteTagReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.FindTagPageListReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.UpdateTagReqVO;
+import com.dakkk.dkblog.admin.model.vo.tag.*;
 import com.dakkk.dkblog.admin.service.AdminTagService;
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import com.dakkk.dkblog.common.utils.PageResponse;
@@ -48,7 +45,7 @@ public class AdminTagController {
     @ApiOperationLog(description = "获取标签的分页数据")
     public PageResponse findTagList(@RequestBody @Validated FindTagPageListReqVO findTagPageListReqVO){
         System.out.println(findTagPageListReqVO);
-        return tagService.findTagList(findTagPageListReqVO);
+        return tagService.findTagPageList(findTagPageListReqVO);
     }
 
     @PostMapping("/delete")
@@ -59,11 +56,11 @@ public class AdminTagController {
         return tagService.deleteTag(deleteTagReqVO);
     }
 
-    @PostMapping("/select/list")
+    @PostMapping("/tag/search")
     @ApiOperation("4-创建文章时，获取分类下拉列表中的数据")
     @ApiOperationLog(description = "创建文章时，获取分类下拉列表中的数据")
-    public Response findTagSelectList(){
-        return tagService.findTagSelectList();
+    public Response searchTags(@RequestBody @Validated SearchTagsReqVO searchTagsReqVO) {
+        return tagService.searchTags(searchTagsReqVO);
     }
 
     @PostMapping("/update")

@@ -77,7 +77,7 @@ public class AdminTagServiceImpl implements AdminTagService {
      * @return 出参（PageResponse对象，其中date数据为id、createTime、name的list集合）
      */
     @Override
-    public PageResponse findTagList(FindTagPageListReqVO findTagPageListReqVO) {
+    public PageResponse findTagPageList(FindTagPageListReqVO findTagPageListReqVO) {
         // 获取当前页，以及每页需要展示的数据数量
         Long current = findTagPageListReqVO.getCurrent();
         Long size = findTagPageListReqVO.getSize();
@@ -145,22 +145,23 @@ public class AdminTagServiceImpl implements AdminTagService {
      * @return
      */
     @Override
-    public Response findTagSelectList() {
-        // 查询所有分类
-        List<TagDO> tagDOS = tagMapper.selectList(null);
+    public Response searchTags(SearchTagsReqVO searchTagsReqVO) {
+        String key = searchTagsReqVO.getKey();
+
+        // 执行模糊查询
+        List<TagDO> tagDOS = tagMapper.selectByKey(key);
 
         // DO 转 VO
-        List<SelectRspVO> selectRspVOS = null;
-        // 如果分类数据不为空
-        if (!CollectionUtils.isEmpty(tagDOS)) {
-            selectRspVOS = tagDOS.stream()
+        List<SelectRspVO> vos = null;
+        if (!CollectionUtils.isEmpty(tagDOS)){
+            vos = tagDOS.stream()
                     .map(tagDO -> SelectRspVO.builder()
                             .label(tagDO.getName())
                             .value(tagDO.getId())
                             .build())
                     .collect(Collectors.toList());
         }
-        return Response.success(selectRspVOS);
+        return Response.success(vos);
     }
 
     /**

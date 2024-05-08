@@ -1,10 +1,7 @@
 package com.dakkk.dkblog.admin.service;
 
 
-import com.dakkk.dkblog.admin.model.vo.tag.AddTagReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.DeleteTagReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.FindTagPageListReqVO;
-import com.dakkk.dkblog.admin.model.vo.tag.UpdateTagReqVO;
+import com.dakkk.dkblog.admin.model.vo.tag.*;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 
@@ -18,22 +15,22 @@ import com.dakkk.dkblog.common.utils.Response;
  */
 public interface AdminTagService {
     /**
-     * 添加分类
+     * 添加标签
      */
     Response addTag(AddTagReqVO addTagReqVO);
     /**
-     * 分类的分页数据查询
+     * 标签的分页数据查询
      */
-    PageResponse findTagList(FindTagPageListReqVO findTagPageListReqVO);
+    PageResponse findTagPageList(FindTagPageListReqVO findTagPageListReqVO);
 
     /**
-     * 删除分类
+     * 删除标签
      */
     Response deleteTag(DeleteTagReqVO deleteTagReqVO);
     /**
-     * 获取文章分类的 Select 列表数据
+     * 根据标签关键词模糊查询
      */
-    Response findTagSelectList();
+    Response searchTags(SearchTagsReqVO searchTagsReqVO);
     /**
      * 修改分类
      */
