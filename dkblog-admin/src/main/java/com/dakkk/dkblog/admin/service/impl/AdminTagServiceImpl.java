@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.UpdateCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.tag.*;
@@ -207,5 +208,21 @@ public class AdminTagServiceImpl implements AdminTagService {
         tagMapper.updateById(updateTagDo);
 
         return Response.success();
+    }
+
+    @Override
+    public Response findTagSelectList() {
+        // 查询所有标签， Wrappers.emptyWrapper() 表示查询条件为空
+        List<TagDO> tagDOS = tagMapper.selectList(Wrappers.emptyWrapper());
+
+        // DO 转 VO
+        List<SelectRspVO> vos = null;
+        if (!CollectionUtils.isEmpty(tagDOS)){
+            vos = tagDOS.stream().map(tagDO -> SelectRspVO.builder()
+                    .value(tagDO.getId())
+                    .label(tagDO.getName())
+                    .build()).collect(Collectors.toList());
+        }
+        return Response.success(vos);
     }
 }

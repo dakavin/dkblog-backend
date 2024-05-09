@@ -35,4 +35,9 @@ public interface AdminTagService {
      * 修改分类
      */
     Response updateTag(UpdateTagReqVO updateTagReqVO);
+
+    /**
+     * 查询标签 Select 列表数据
+     */
+    Response findTagSelectList();
 }

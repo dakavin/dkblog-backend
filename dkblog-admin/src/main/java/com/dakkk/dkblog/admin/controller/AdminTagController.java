@@ -70,4 +70,11 @@ public class AdminTagController {
     public Response updateTag(@RequestBody @Validated UpdateTagReqVO updateTagReqVO) {
         return tagService.updateTag(updateTagReqVO);
     }
+
+    @PostMapping("/select/list")
+    @ApiOperation("6-查询标签 select 列表数据")
+    @ApiOperationLog(description = "查询标签 select 列表数据")
+    public Response selectTagList() {
+        return tagService.findTagSelectList();
+    }
 }
