@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.*;
 import com.dakkk.dkblog.admin.service.AdminCategoryService;
+import com.dakkk.dkblog.common.domain.dos.ArticleCategoryRefDO;
 import com.dakkk.dkblog.common.domain.dos.CategoryDO;
+import com.dakkk.dkblog.common.domain.mapper.ArticleCategoryRefMapper;
 import com.dakkk.dkblog.common.domain.mapper.CategoryMapper;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.exception.BizException;
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
 public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Resource
     private CategoryMapper categoryMapper;
+    @Resource
+    private ArticleCategoryRefMapper articleCategoryRefMapper;
 
     /**
      * 增加分类的方法
@@ -130,6 +134,15 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     public Response deleteCategory(DeleteCategoryReqVO deleteCategoryReqVO) {
         // 分类Id
         Long categoryId = deleteCategoryReqVO.getId();
+
+        // 校验该分类下 是否已经有文章了，存在文章则不允许删除
+        ArticleCategoryRefDO articleCategoryRefDO =
+                articleCategoryRefMapper.selectOneByCategoryId(categoryId);
+
+        if (Objects.nonNull(articleCategoryRefDO)){
+            log.warn("==> 此分类下包含文章，无法删除，categoryId：{}",categoryId);
+            throw new BizException(ResponseErrorCodeEnum.CATEGROY_CAN_NOT_DELETE);
+        }
 
         // 删除分类
         categoryMapper.deleteById(categoryId);

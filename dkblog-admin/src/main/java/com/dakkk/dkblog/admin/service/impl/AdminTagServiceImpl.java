@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.model.vo.category.UpdateCategoryReqVO;
 import com.dakkk.dkblog.admin.model.vo.tag.*;
 import com.dakkk.dkblog.admin.service.AdminTagService;
+import com.dakkk.dkblog.common.domain.dos.ArticleTagRefDO;
 import com.dakkk.dkblog.common.domain.dos.CategoryDO;
 import com.dakkk.dkblog.common.domain.dos.TagDO;
+import com.dakkk.dkblog.common.domain.mapper.ArticleTagRefMapper;
 import com.dakkk.dkblog.common.domain.mapper.TagMapper;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.exception.BizException;
@@ -38,11 +40,13 @@ import java.util.stream.Collectors;
 public class AdminTagServiceImpl implements AdminTagService {
     @Resource
     private TagMapper tagMapper;
+    @Resource
+    private ArticleTagRefMapper articleTagRefMapper;
 
     /**
-     * 增加分类的方法
+     * 增加标签的方法
      *
-     * @param addTagReqVO 入参（增加分类的name）
+     * @param addTagReqVO 入参（增加标签的name）
      * @return 返回Response对象，只需要success即可
      */
     @Override
@@ -50,7 +54,7 @@ public class AdminTagServiceImpl implements AdminTagService {
         String tagName = addTagReqVO.getName();
         String tagDesc = addTagReqVO.getDescription();
 
-        // 先判断该分类是否已经存在
+        // 先判断该标签是否已经存在
         TagDO tagDO = tagMapper.selectByName(tagName);
 
         if (Objects.nonNull(tagDO)) {
@@ -72,7 +76,7 @@ public class AdminTagServiceImpl implements AdminTagService {
     }
 
     /**
-     * 获取分类分页后的数据集合
+     * 获取标签分页后的数据集合
      *
      * @param findCategoryPageListReqVO 入参（current、size、name，startDate、endDate）
      * @return 出参（PageResponse对象，其中date数据为id、createTime、name的list集合）
@@ -124,24 +128,31 @@ public class AdminTagServiceImpl implements AdminTagService {
     }
 
     /**
-     * 删除分类的方法
+     * 删除标签的方法
      *
      * @param deleteCategoryReqVO 入参（删除的id）
      * @return 返回Response对象即可
      */
     @Override
     public Response deleteTag(DeleteTagReqVO deleteTagReqVO) {
-        // 分类Id
+        // 标签Id
         Long tagId = deleteTagReqVO.getId();
+        
+        // 判断该标签是是否存在文章
+        ArticleTagRefDO articleTagRefDO = articleTagRefMapper.selectOneByTagId(tagId);
+        if (Objects.nonNull(articleTagRefDO)){
+            log.warn("==> 此标签下包含文章，无法删除，tagId: {}", tagId);
+            throw new BizException(ResponseErrorCodeEnum.TAG_CAN_NOT_DELETE);
+        }
 
-        // 删除分类
-        tagMapper.deleteById(tagId);
+        // 删除标签
+        int count = tagMapper.deleteById(tagId);
 
-        return Response.success();
+        return count == 1 ? Response.success() : Response.fail(ResponseErrorCodeEnum.TAG_NOT_EXISTED);
     }
 
     /**
-     * 创建文章时，在文章分类的下拉列表中展示分类的 文字描述 和 id
+     * 创建文章时，在文章标签的下拉列表中展示标签的 文字描述 和 id
      *
      * @return
      */
@@ -166,7 +177,7 @@ public class AdminTagServiceImpl implements AdminTagService {
     }
 
     /**
-     * 修改分类的名称和描述
+     * 修改标签的名称和描述
      *
      * @param editCategoryReqVO
      * @return
@@ -190,7 +201,7 @@ public class AdminTagServiceImpl implements AdminTagService {
 
         // 再判断该名称是否已经存在，并且和修改的数据名称不一致
         if (Objects.nonNull(tagDOByName) && !StringUtils.equals(tagDOById.getName(),tagDOByName.getName())) {
-            log.warn("分类名称：{}，已存在", tagName);
+            log.warn("标签名称：{}，已存在", tagName);
             throw new BizException(ResponseErrorCodeEnum.TAG_NAME_IS_EXISTED);
         }
 

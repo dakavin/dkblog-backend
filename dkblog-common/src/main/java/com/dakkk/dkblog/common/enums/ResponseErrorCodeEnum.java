@@ -40,7 +40,13 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 文章不存在
     ARTICLE_NOT_FOUND("20008","文章不存在！" ),
     // 上传文件失败
-    FILE_UPLOAD_FAILED("20009","上传文件失败" );
+    FILE_UPLOAD_FAILED("20009","上传文件失败" ),
+    // 分类下包含文章，无法删除
+    CATEGROY_CAN_NOT_DELETE("20010", "该分类下包含文章，请先删除对应文章，才能删除！"),
+    // 标签下包含文章，无法删除
+    TAG_CAN_NOT_DELETE("20011", "该标签下包含文章，请先删除对应文章，才能删除！"),
+    // 标签不存在
+    TAG_NOT_EXISTED("20012","标签不存在，无法删除" );
 
 
 

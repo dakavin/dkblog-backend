@@ -28,6 +28,15 @@ public interface ArticleTagRefMapper extends InsertBatchMapper<ArticleTagRefDO> 
         return selectList(Wrappers.<ArticleTagRefDO>lambdaQuery()
                 .eq(ArticleTagRefDO::getArticleId,articleId));
     }
+
+    /**
+     * 根据标签 ID 查询
+     */
+    default ArticleTagRefDO selectOneByTagId(Long tagId){
+        return selectOne(Wrappers.<ArticleTagRefDO>lambdaQuery()
+                .eq(ArticleTagRefDO::getTagId,tagId)
+                .last("LIMIT 1"));
+    }
 }
 
 
