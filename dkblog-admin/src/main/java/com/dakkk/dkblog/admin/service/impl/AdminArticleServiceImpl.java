@@ -2,6 +2,7 @@ package com.dakkk.dkblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dakkk.dkblog.admin.convert.ArticleConvert;
 import com.dakkk.dkblog.admin.convert.ArticleDetailConvert;
 import com.dakkk.dkblog.admin.model.vo.article.*;
 import com.dakkk.dkblog.admin.service.AdminArticleService;
@@ -19,10 +20,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -209,12 +207,64 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         // 执行分页查询
         Page<ArticleDO> articleDOPage = articleMapper.selectPageList(current, size, title, startTime, endTime);
-        // 获取实际内容
+        // 返回的实际分页数据
         List<ArticleDO> articleDOS = articleDOPage.getRecords();
 
-        // DO 转 VO
         List<FindArticlePageListRspVO> vos = null;
         if (!CollectionUtils.isEmpty(articleDOS)) {
+            // DO 转 VO
+            vos = articleDOS.stream().map(articleDO -> ArticleConvert.INSTANCE.convertDO2VO(articleDO)).collect(Collectors.toList());
+            // 拿到所有文章的ID集合
+            List<Long> articleIds = articleDOS.stream().map(ArticleDO::getId).collect(Collectors.toList());
+
+            // -->设置VO的分类名称<--
+            // 查询所有的分类
+            List<CategoryDO> categoryDOS = categoryMapper.selectList(Wrappers.emptyWrapper());
+            // 转Map，方便后续根据分类ID获取分类名称
+            Map<Long, String> categoryIdNameMap = categoryDOS.stream().collect(Collectors.toMap(CategoryDO::getId, CategoryDO::getName));
+            // 根据文章ID集合，批量查询所有的关联的分类记录
+            List<ArticleCategoryRefDO> articleCategoryRefDOS = articleCategoryRefMapper.selectByArticleIds(articleIds);
+            // 筛选
+            vos.forEach(vo -> {
+                Long currArticleId = vo.getId();
+                // 过滤出当前文章对应关联的分类
+                Optional<ArticleCategoryRefDO> optional =
+                        articleCategoryRefDOS.stream().filter(ref -> Objects.equals(ref.getArticleId(), currArticleId)).findAny();
+                // 若过滤不为空，则将当前vo对应的分类名称进行设置
+                if (optional.isPresent()) {
+                    ArticleCategoryRefDO articleCategoryRefDO = optional.get();
+                    Long categoryId = articleCategoryRefDO.getCategoryId();
+                    // 通过分类ID从Map中获取分类的名称,并给VO设置
+                    vo.setCategoryName(categoryIdNameMap.get(categoryId));
+                }
+            });
+
+            // -->设置VO的标签名称<--
+            // 查询所有的标签
+            List<TagDO> tagDOS = tagMapper.selectList(Wrappers.emptyWrapper());
+            // 转Map
+            Map<Long, String> tagIdNameMap = tagDOS.stream().collect(Collectors.toMap(TagDO::getId, TagDO::getName));
+            // 根据文章ID集合，批量查询所有的关联的标签记录
+            List<ArticleTagRefDO> articleTagRefDOS = articleTagRefMapper.selectByArticleIds(articleIds);
+            // 筛选
+            vos.forEach(vo -> {
+                Long currArticleId = vo.getId();
+                // 过滤出当前文章对应关联的标签
+                List<ArticleTagRefDO> articleTagRefDOList =
+                        articleTagRefDOS.stream().filter(ref -> Objects.equals(ref.getArticleId(), currArticleId)).collect(Collectors.toList());
+                // 将对应的标签转换为标签名
+                List<String> tagNames = Lists.newArrayList(); // list必须初始化
+                articleTagRefDOList.forEach(articleTagRefDO -> {
+                    Long tagId = articleTagRefDO.getTagId();
+                    String tagName = tagIdNameMap.get(tagId);
+                    tagNames.add(tagName);
+                });
+                vo.setTagNames(tagNames);
+            });
+
+            System.out.println(vos);
+
+            /* 循环中查询数据库，大忌！！！
             vos = articleDOS.stream()
                     .map(articleDO -> {
                         FindArticlePageListRspVO vo = FindArticlePageListRspVO.builder()
@@ -238,6 +288,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                         return vo;
                     })
                     .collect(Collectors.toList());
+            */
         }
         return PageResponse.success(articleDOPage, vos);
     }
@@ -249,8 +300,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         // 获取文章相关信息
         ArticleDO articleDO = articleMapper.selectById(articleId);
 
-        if (Objects.isNull(articleDO)){
-            log.warn("==> 查询的文章不存在，articleId：{}",articleId);
+        if (Objects.isNull(articleDO)) {
+            log.warn("==> 查询的文章不存在，articleId：{}", articleId);
             throw new BizException(ResponseErrorCodeEnum.ARTICLE_NOT_FOUND);
         }
 
@@ -290,8 +341,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         int count = articleMapper.updateById(articleDO);
 
         // 判断更新是否成功，来判断该文章是否存在
-        if (count == 0){
-            log.warn("==> 该文章不存在，articleId：{}",articleId);
+        if (count == 0) {
+            log.warn("==> 该文章不存在，articleId：{}", articleId);
             throw new BizException(ResponseErrorCodeEnum.ARTICLE_NOT_FOUND);
         }
 
@@ -306,8 +357,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         Long categoryId = updateArticleReqVO.getCategoryId();
         // 校验分类是否存在
         CategoryDO categoryDO = categoryMapper.selectById(categoryId);
-        if (Objects.isNull(categoryDO)){
-            log.warn("==> 分类不存在，categoryId：{}",categoryId);
+        if (Objects.isNull(categoryDO)) {
+            log.warn("==> 分类不存在，categoryId：{}", categoryId);
             throw new BizException(ResponseErrorCodeEnum.CATEGORY_NOT_EXISTED);
         }
 
@@ -323,7 +374,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         // 先删除文章对应的标签
         articleTagRefMapper.deleteByArticleId(articleId);
         List<String> publishTags = updateArticleReqVO.getTags();
-        insertTags(articleId,publishTags);
+        insertTags(articleId, publishTags);
 
         return Response.success();
     }
