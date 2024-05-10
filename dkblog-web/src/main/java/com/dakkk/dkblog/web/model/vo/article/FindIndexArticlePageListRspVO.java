@@ -1,7 +1,6 @@
 package com.dakkk.dkblog.web.model.vo.article;
 
-import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
-import com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO;
+import com.dakkk.dkblog.web.model.vo.category.FindTagListRspVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,9 +30,9 @@ public class FindIndexArticlePageListRspVO {
     /**
      * 文章分类
      */
-    private FindCategoryListRspVO category;
+    private FindTagListRspVO category;
     /**
      * 文章标签
      */
-    private List<FindTagListRspVO> tags;
+    private List<com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO> tags;
 }

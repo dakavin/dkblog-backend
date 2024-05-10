@@ -9,8 +9,7 @@ import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.convert.ArticleConvert;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListReqVO;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListRspVO;
-import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
-import com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO;
+import com.dakkk.dkblog.web.model.vo.category.FindTagListRspVO;
 import com.dakkk.dkblog.web.service.ArticleService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -92,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
                     Long categoryId = articleCategoryRefDO.getCategoryId();
                     // 通过分类 ID 从 map 中拿到对应的分类名称
                     String categoryName = categoryIdNameMap.get(categoryId);
-                    FindCategoryListRspVO findCategoryListRspVO = FindCategoryListRspVO.builder()
+                    FindTagListRspVO findCategoryListRspVO = FindTagListRspVO.builder()
                             .id(categoryId)
                             .name(categoryName)
                             .build();
@@ -114,12 +113,12 @@ public class ArticleServiceImpl implements ArticleService {
                 List<ArticleTagRefDO> articleTagRefList
                         = articleTagRefDOS.stream().filter(ref -> Objects.equals(ref.getArticleId(), currArticleId)).collect(Collectors.toList());
                 // 将关联的标签ID转化为标签Name，并存入VO中
-                List<FindTagListRspVO> findTagListRspVOS = Lists.newArrayList();
+                List<com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO> findTagListRspVOS = Lists.newArrayList();
                 articleTagRefList.forEach(articleTagRefDO -> {
                     Long tagId = articleTagRefDO.getTagId();
                     String tagName = tagIdNameMap.get(tagId);
 
-                    findTagListRspVOS.add(FindTagListRspVO.builder()
+                    findTagListRspVOS.add(com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO.builder()
                                     .id(tagId)
                                     .name(tagName)
                             .build());
