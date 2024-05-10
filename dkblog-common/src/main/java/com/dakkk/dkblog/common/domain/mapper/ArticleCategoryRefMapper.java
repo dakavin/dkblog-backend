@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dakkk.dkblog.common.domain.dos.ArticleCategoryRefDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dakkk.dkblog.common.domain.dos.ArticleContentDO;
+import com.dakkk.dkblog.common.domain.dos.ArticleTagRefDO;
 import com.dakkk.dkblog.common.domain.dos.CategoryDO;
+
+import java.util.List;
 
 /**
  * @author mikey
@@ -36,6 +39,15 @@ public interface ArticleCategoryRefMapper extends BaseMapper<ArticleCategoryRefD
         return selectOne(Wrappers.<ArticleCategoryRefDO>lambdaQuery()
                 .eq(ArticleCategoryRefDO::getCategoryId, CategoryId)
                 .last("LIMIT 1"));
+    }
+
+    /**
+     * 根据文章ID的list集合，批量查询
+     */
+    default List<ArticleCategoryRefDO> selectByArticleIds(List<Long> articleIds){
+        return selectList(Wrappers.<ArticleCategoryRefDO>lambdaQuery()
+                // 注意是 in
+                .in(ArticleCategoryRefDO::getArticleId,articleIds));
     }
 }
 

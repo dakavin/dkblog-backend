@@ -29,7 +29,7 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
         // 构建查询条件
         LambdaQueryWrapper<ArticleDO> lqw = Wrappers.<ArticleDO>lambdaQuery()
                 // like 模糊查询文章标题
-                .like(StringUtils.isNotBlank(title), ArticleDO::getTitle, title.trim())
+                .like(StringUtils.isNotBlank(title), ArticleDO::getTitle, title)
                 // 大于等于起始时间
                 .ge(Objects.nonNull(startDateTime), ArticleDO::getCreateTime, startDateTime)
                 // 小于等于结束时间

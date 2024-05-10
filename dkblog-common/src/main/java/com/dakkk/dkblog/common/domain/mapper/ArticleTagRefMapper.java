@@ -37,6 +37,15 @@ public interface ArticleTagRefMapper extends InsertBatchMapper<ArticleTagRefDO> 
                 .eq(ArticleTagRefDO::getTagId,tagId)
                 .last("LIMIT 1"));
     }
+
+    /**
+     * 根据文章ID的list集合，批量查询
+     */
+    default List<ArticleTagRefDO> selectByArticleIds(List<Long> articleIds){
+        return selectList(Wrappers.<ArticleTagRefDO>lambdaQuery()
+                // 注意是 in
+                .in(ArticleTagRefDO::getArticleId,articleIds));
+    }
 }
 
 
