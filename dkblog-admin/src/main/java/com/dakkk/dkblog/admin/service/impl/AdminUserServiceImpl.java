@@ -1,8 +1,10 @@
 package com.dakkk.dkblog.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dakkk.dkblog.admin.model.vo.user.FindUserInfoRspVO;
 import com.dakkk.dkblog.admin.model.vo.user.UpdateAdminUserPasswordReqVO;
 import com.dakkk.dkblog.admin.service.AdminUserService;
+import com.dakkk.dkblog.common.domain.dos.UserDO;
 import com.dakkk.dkblog.common.domain.mapper.UserMapper;
 import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
 import com.dakkk.dkblog.common.utils.Response;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * ClassName: AdminUserServiceImpl
@@ -30,13 +33,20 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response updatePassword(UpdateAdminUserPasswordReqVO updateAdminUserPasswordReqVO) {
-        // 拿到用户名和密码
+        // 拿到用户名和新旧密码
         String username = updateAdminUserPasswordReqVO.getUsername();
+        String originPassword = updateAdminUserPasswordReqVO.getOriginPassword();
         String password = updateAdminUserPasswordReqVO.getPassword();
 
-        // 加密密码
-        String encodePassword = passwordEncoder.encode(password);
+        // 先校验用户名和密码是否正确
+        UserDO userDO = userMapper.selectOne(Wrappers.<UserDO>lambdaQuery()
+                .eq(UserDO::getUsername, username));
+        if (!passwordEncoder.matches(originPassword,userDO.getPassword())){
+            return Response.fail("用户旧密码输入错误，请再次检查");
+        }
 
+        // 加密新密码
+        String encodePassword = passwordEncoder.encode(password);
         // 更新到数据库
         int count = userMapper.updatePasswordByUsernameInt(username, encodePassword);
 

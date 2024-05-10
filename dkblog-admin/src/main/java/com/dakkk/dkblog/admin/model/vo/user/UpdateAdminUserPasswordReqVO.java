@@ -26,7 +26,10 @@ public class UpdateAdminUserPasswordReqVO {
     @NotBlank(message = "用户名不能为空")
     @ApiModelProperty("用户名")
     private String username;
-    @NotBlank(message = "密码不能为空")
-    @ApiModelProperty("密码")
+    @NotBlank(message = "旧密码不能为空")
+    @ApiModelProperty("旧密码")
+    private String originPassword;
+    @NotBlank(message = "新密码不能为空")
+    @ApiModelProperty("新密码")
     private String password;
 }
