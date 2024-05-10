@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.model.vo.article;
 
+import com.dakkk.dkblog.common.domain.dos.TagDO;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * ClassName: FindArticlePageListRspVO
@@ -46,4 +48,12 @@ public class FindArticlePageListRspVO {
      * 文章更新时间
      */
     private LocalDateTime updateTime;
+    /**
+     * 文章所属分类
+     */
+    private String categoryName;
+    /**
+     * 标签 ID 集合
+     */
+    private List<String> tagNames;
 }

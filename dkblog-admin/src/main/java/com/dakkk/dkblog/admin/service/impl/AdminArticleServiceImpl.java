@@ -1,5 +1,6 @@
 package com.dakkk.dkblog.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.admin.convert.ArticleDetailConvert;
 import com.dakkk.dkblog.admin.model.vo.article.*;
@@ -215,14 +216,27 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         List<FindArticlePageListRspVO> vos = null;
         if (!CollectionUtils.isEmpty(articleDOS)) {
             vos = articleDOS.stream()
-                    .map(articleDO -> FindArticlePageListRspVO.builder()
-                            .id(articleDO.getId())
-                            .summary(articleDO.getSummary())
-                            .title(articleDO.getTitle())
-                            .cover(articleDO.getCover())
-                            .createTime(articleDO.getCreateTime())
-                            .updateTime(articleDO.getUpdateTime())
-                            .build())
+                    .map(articleDO -> {
+                        FindArticlePageListRspVO vo = FindArticlePageListRspVO.builder()
+                                .id(articleDO.getId())
+                                .summary(articleDO.getSummary())
+                                .title(articleDO.getTitle())
+                                .cover(articleDO.getCover())
+                                .createTime(articleDO.getCreateTime())
+                                .updateTime(articleDO.getUpdateTime())
+                                .build();
+                        // 查询文章所属分类，并设置到vo中去
+                        CategoryDO categoryDO = categoryMapper.selectById(articleCategoryRefMapper.selectByArticleId(articleDO.getId()).getCategoryId());
+                        vo.setCategoryName(categoryDO.getName());
+                        // 查询文章所属标签，并设置到vo中去
+                        List<ArticleTagRefDO> articleTagRefDOS = articleTagRefMapper.selectByArticleId(articleDO.getId());
+                        List<Long> tagIds = articleTagRefDOS.stream().map(ArticleTagRefDO::getTagId).collect(Collectors.toList());
+                        List<String> tagNames = tagIds.stream().map(
+                                tagId -> tagMapper.selectById(tagId).getName()
+                        ).collect(Collectors.toList());
+                        vo.setTagNames(tagNames);
+                        return vo;
+                    })
                     .collect(Collectors.toList());
         }
         return PageResponse.success(articleDOPage, vos);
@@ -251,7 +265,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         List<Long> tagIds = articleTagRefDOS.stream().map(ArticleTagRefDO::getTagId).collect(Collectors.toList());
 
         // DO 转 VO
-        System.out.println(ArticleDetailConvert.INSTANCE);
+        // System.out.println(ArticleDetailConvert.INSTANCE);
         FindArticleDetailRspVO vo = ArticleDetailConvert.INSTANCE.convertDO2VO(articleDO);
         vo.setContent(articleContentDO.getContent());
         vo.setCategoryId(articleCategoryRefDO.getCategoryId());
