@@ -3,6 +3,7 @@ package com.dakkk.dkblog.web.convert;
 import com.dakkk.dkblog.common.domain.dos.ArticleDO;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListRspVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -22,5 +23,7 @@ public interface ArticleConvert {
     /**
      * DO 转 VO 的方法
      */
+    @Mapping(target = "createDate",expression =
+            "java(java.time.LocalDate.from(bean.getCreateTime()))")
     FindIndexArticlePageListRspVO convertDO2VO(ArticleDO bean);
 }
