@@ -36,5 +36,5 @@ public class UpdateBlogSettingsReqVO {
     private String githubHomepage;
     private String giteeHomepage;
     private String email;
-    private String otherHomePage;
+    private String otherHomepage;
 }

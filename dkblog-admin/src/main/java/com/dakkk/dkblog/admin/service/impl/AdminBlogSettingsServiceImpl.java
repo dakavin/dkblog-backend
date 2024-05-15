@@ -26,6 +26,7 @@ public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper
         implements AdminBlogSettingsService {
     @Resource
     BlogSettingsMapper blogSettingsMapper;
+
     @Override
     public Response updateBlogSettings(UpdateBlogSettingsReqVO updateBlogSettingsReqVO) {
         // VO 转 DO
