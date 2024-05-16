@@ -94,8 +94,8 @@ public class AdminTagServiceImpl implements AdminTagService {
         LambdaQueryWrapper<TagDO> lqw = new LambdaQueryWrapper<>();
 
         String name = findTagPageListReqVO.getName();
-        LocalDateTime startDate = findTagPageListReqVO.getStartDate();
-        LocalDateTime endDate = findTagPageListReqVO.getEndDate();
+        LocalDateTime startDate = findTagPageListReqVO.getStartDateTime();
+        LocalDateTime endDate = findTagPageListReqVO.getEndDateTime();
 
         lqw
                 // like 模块查询

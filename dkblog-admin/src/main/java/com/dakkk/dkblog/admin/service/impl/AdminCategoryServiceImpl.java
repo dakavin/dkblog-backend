@@ -91,8 +91,8 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         LambdaQueryWrapper<CategoryDO> lqw = new LambdaQueryWrapper<>();
 
         String name = findCategoryPageListReqVO.getName();
-        LocalDateTime startDate = findCategoryPageListReqVO.getStartDate();
-        LocalDateTime endDate = findCategoryPageListReqVO.getEndDate();
+        LocalDateTime startDate = findCategoryPageListReqVO.getStartDateTime();
+        LocalDateTime endDate = findCategoryPageListReqVO.getEndDateTime();
 
         lqw
                 // like 模块查询

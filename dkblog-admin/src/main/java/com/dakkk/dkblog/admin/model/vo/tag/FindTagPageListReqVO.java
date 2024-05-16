@@ -30,9 +30,9 @@ public class FindTagPageListReqVO extends BasePageQuery {
     /**
      * 创建的起始日期
      */
-    private LocalDateTime startDate;
+    private LocalDateTime startDateTime;
     /**
      * 创建的结束日期
      */
-    private LocalDateTime endDate;
+    private LocalDateTime endDateTime;
 }
