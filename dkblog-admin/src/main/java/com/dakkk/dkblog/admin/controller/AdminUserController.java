@@ -1,4 +1,4 @@
-package com.dakkk.dkblog.web.controller;
+package com.dakkk.dkblog.admin.controller;
 
 import com.dakkk.dkblog.admin.model.vo.user.UpdateAdminUserPasswordReqVO;
 import com.dakkk.dkblog.admin.service.AdminUserService;
