@@ -2,11 +2,15 @@ package com.dakkk.dkblog.web.controller;
 
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import com.dakkk.dkblog.common.utils.Response;
+import com.dakkk.dkblog.web.model.vo.category.FindCategoryArticlePageListReqVO;
+import com.dakkk.dkblog.web.model.vo.tag.FindTagArticlePageListReqVO;
 import com.dakkk.dkblog.web.service.CategoryService;
 import com.dakkk.dkblog.web.service.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +36,13 @@ public class TagController {
     @ApiOperationLog(description = "前台获取标签列表")
     public Response findCategoryList(){
         return tagService.findTagList();
+    }
+
+    @PostMapping("/article/list")
+    @ApiOperation("2-前台获取标签对应的文章列表")
+    @ApiOperationLog(description = "前台获取标签对应的文章列表")
+    public Response findCategoryArticlePageList(@RequestBody @Validated
+                                                FindTagArticlePageListReqVO findTagArticlePageListReqVO){
+        return tagService.findTagArticlePageList(findTagArticlePageListReqVO);
     }
 }

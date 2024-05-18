@@ -46,7 +46,7 @@ public enum ResponseErrorCodeEnum implements BaseExceptionInterface {
     // 标签下包含文章，无法删除
     TAG_CAN_NOT_DELETE("20011", "该标签下包含文章，请先删除对应文章，才能删除！"),
     // 标签不存在
-    TAG_NOT_EXISTED("20012","标签不存在，无法删除" );
+    TAG_NOT_EXISTED("20012","标签不存在" );
 
 
 

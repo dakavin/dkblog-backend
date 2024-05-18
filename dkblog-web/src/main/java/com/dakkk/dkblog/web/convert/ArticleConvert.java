@@ -5,6 +5,7 @@ import com.dakkk.dkblog.web.model.vo.archive.FindArchiveArticleRspVO;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListRspVO;
 import com.dakkk.dkblog.web.model.vo.category.FindCategoryArticlePageListReqVO;
 import com.dakkk.dkblog.web.model.vo.category.FindCategoryArticlePageListRspVO;
+import com.dakkk.dkblog.web.model.vo.tag.FindTagArticlePageListRspVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -38,8 +39,14 @@ public interface ArticleConvert {
     FindArchiveArticleRspVO convertDO2ArchiveArticleVO(ArticleDO bean);
 
     /**
-     * 将DO转化为分类文章DO
+     * 将DO转化为分类对应文章DO
      */
     @Mapping(target = "createDate",expression = "java(java.time.LocalDate.from(bean.getCreateTime()))")
     FindCategoryArticlePageListRspVO convertDO2CategoryArticleVO(ArticleDO bean);
+
+    /**
+     * 将DO转化为标签对应文章DO
+     */
+    @Mapping(target = "createDate",expression = "java(java.time.LocalDate.from(bean.getCreateTime()))")
+    FindTagArticlePageListRspVO convertDO2TagArticleVO(ArticleDO bean);
 }

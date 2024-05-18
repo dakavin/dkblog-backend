@@ -46,6 +46,14 @@ public interface ArticleTagRefMapper extends InsertBatchMapper<ArticleTagRefDO> 
                 // 注意是 in
                 .in(ArticleTagRefDO::getArticleId,articleIds));
     }
+
+    /**
+     * 根据标签id，查询所有关联的记录
+     */
+    default List<ArticleTagRefDO> selectListByTagId(Long tagId){
+        return selectList(Wrappers.<ArticleTagRefDO>lambdaQuery()
+                .eq(ArticleTagRefDO::getTagId,tagId));
+    }
 }
 
 
