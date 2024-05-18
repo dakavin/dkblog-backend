@@ -49,6 +49,14 @@ public interface ArticleCategoryRefMapper extends BaseMapper<ArticleCategoryRefD
                 // 注意是 in
                 .in(ArticleCategoryRefDO::getArticleId,articleIds));
     }
+
+    /**
+     * 根据分类id，查询所有关联的记录
+     */
+    default List<ArticleCategoryRefDO> selectListByCategoryId(Long categoryId){
+        return selectList(Wrappers.<ArticleCategoryRefDO>lambdaQuery()
+                .eq(ArticleCategoryRefDO::getCategoryId,categoryId));
+    }
 }
 
 

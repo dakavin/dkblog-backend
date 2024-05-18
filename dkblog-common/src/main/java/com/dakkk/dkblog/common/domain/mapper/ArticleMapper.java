@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.sql.Wrapper;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,22 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
                 // 按照文章创建时间，倒叙排列
                 .orderByDesc(ArticleDO::getCreateTime);
         return selectPage(page, lqw);
+    }
+
+    /**
+     * 根据文章id，批量分页查询
+     */
+    default Page<ArticleDO> selectPageListByArticleIds(Long current, Long size, List<Long> articleIds){
+        // 分页对象（查询第几页、每页多少数据）
+        Page<ArticleDO> page = new Page<>(current,size);
+        // 构建查询条件
+        LambdaQueryWrapper<ArticleDO> lqw = Wrappers.<ArticleDO>lambdaQuery()
+                // 批量查询
+                .in(ArticleDO::getId,articleIds)
+                //按创建时间倒序
+                .orderByDesc(ArticleDO::getCreateTime);
+
+        return selectPage(page,lqw);
     }
 }
 
