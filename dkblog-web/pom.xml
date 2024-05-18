@@ -65,6 +65,21 @@
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark-ext-gfm-tables</artifactId>
         </dependency>
+        <!-- MD中自动给h1、h2等标题添加id属性 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-heading-anchor</artifactId>
+        </dependency>
+        <!-- MD中自定义图片宽高的拓展 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-image-attributes</artifactId>
+        </dependency>
+        <!-- MD中支持任务列表的拓展 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-task-list-items</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
