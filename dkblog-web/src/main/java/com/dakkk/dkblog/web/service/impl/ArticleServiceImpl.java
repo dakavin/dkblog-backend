@@ -9,7 +9,7 @@ import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.convert.ArticleConvert;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListReqVO;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListRspVO;
-import com.dakkk.dkblog.web.model.vo.category.FindTagListRspVO;
+import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
 import com.dakkk.dkblog.web.service.ArticleService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -91,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
                     Long categoryId = articleCategoryRefDO.getCategoryId();
                     // 通过分类 ID 从 map 中拿到对应的分类名称
                     String categoryName = categoryIdNameMap.get(categoryId);
-                    FindTagListRspVO findCategoryListRspVO = FindTagListRspVO.builder()
+                    FindCategoryListRspVO findCategoryListRspVO = FindCategoryListRspVO.builder()
                             .id(categoryId)
                             .name(categoryName)
                             .build();

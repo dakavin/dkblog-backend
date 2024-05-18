@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dakkk.dkblog.common.domain.dos.CategoryDO;
 import com.dakkk.dkblog.common.domain.mapper.CategoryMapper;
 import com.dakkk.dkblog.common.utils.Response;
-import com.dakkk.dkblog.web.model.vo.category.FindTagListRspVO;
+import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
 import com.dakkk.dkblog.web.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,9 @@ public class CategoryServiceImpl implements CategoryService {
         // 查询所有分类
         List<CategoryDO> categoryDOS = categoryMapper.selectList(Wrappers.emptyWrapper());
         // DO转VO
-        List<FindTagListRspVO> vos = null;
+        List<FindCategoryListRspVO> vos = null;
         if (!CollectionUtils.isEmpty(categoryDOS)) {
-            vos = categoryDOS.stream().map(categoryDO -> FindTagListRspVO.builder()
+            vos = categoryDOS.stream().map(categoryDO -> FindCategoryListRspVO.builder()
                             .id(categoryDO.getId())
                             .name(categoryDO.getName())
                             .build())

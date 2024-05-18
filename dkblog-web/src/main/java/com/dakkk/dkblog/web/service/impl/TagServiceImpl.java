@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dakkk.dkblog.common.domain.dos.TagDO;
 import com.dakkk.dkblog.common.domain.mapper.TagMapper;
 import com.dakkk.dkblog.common.utils.Response;
-import com.dakkk.dkblog.web.model.vo.category.FindTagListRspVO;
+import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
 import com.dakkk.dkblog.web.service.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,9 @@ public class TagServiceImpl implements TagService {
         // 查询所有分类
         List<TagDO> tagDOS = tagMapper.selectList(Wrappers.emptyWrapper());
         // DO转VO
-        List<FindTagListRspVO> vos = null;
+        List<FindCategoryListRspVO> vos = null;
         if (!CollectionUtils.isEmpty(tagDOS)) {
-            vos = tagDOS.stream().map(categoryDO -> FindTagListRspVO.builder()
+            vos = tagDOS.stream().map(categoryDO -> FindCategoryListRspVO.builder()
                             .id(categoryDO.getId())
                             .name(categoryDO.getName())
                             .build())
