@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dakkk.dkblog.common.domain.dos.*;
 import com.dakkk.dkblog.common.domain.mapper.*;
+import com.dakkk.dkblog.common.enums.ResponseErrorCodeEnum;
+import com.dakkk.dkblog.common.exception.BizException;
 import com.dakkk.dkblog.common.utils.PageResponse;
 import com.dakkk.dkblog.common.utils.Response;
 import com.dakkk.dkblog.web.convert.ArticleConvert;
-import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListReqVO;
-import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListRspVO;
+import com.dakkk.dkblog.web.markdown.MarkdownHelper;
+import com.dakkk.dkblog.web.model.vo.article.*;
 import com.dakkk.dkblog.web.model.vo.category.FindCategoryListRspVO;
+import com.dakkk.dkblog.web.model.vo.tag.FindTagListRspVO;
 import com.dakkk.dkblog.web.service.ArticleService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +47,9 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleCategoryRefMapper articleCategoryRefMapper;
     @Resource
     private ArticleTagRefMapper articleTagRefMapper;
+    @Resource
+    private ArticleContentMapper articleContentMapper;
+
 
     /**
      * 获取首页文章分页数据
@@ -128,5 +134,78 @@ public class ArticleServiceImpl implements ArticleService {
             });
         }
         return PageResponse.success(articleDOPage,vos);
+    }
+
+    /**
+     * 获取文章详情内容
+     * @param findArticleDetailReqVO
+     * @return
+     */
+    @Override
+    public Response findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
+        Long articleId = findArticleDetailReqVO.getArticleId();
+
+        ArticleDO articleDO = articleMapper.selectById(articleId);
+        // 判断文章是否存在
+        if (Objects.isNull(articleDO)){
+            log.warn("==> 该文章不存在，articleId：{}",articleId);
+            throw new BizException(ResponseErrorCodeEnum.ARTICLE_NOT_FOUND);
+        }
+
+        // 查询正文内容
+        ArticleContentDO articleContentDO = articleContentMapper.selectBtArticleId(articleId);
+
+        // DO 转 VO
+        FindArticleDetailRspVO vo = FindArticleDetailRspVO.builder()
+                .title(articleDO.getTitle())
+                .createTime(articleDO.getCreateTime())
+                .updateTime(articleDO.getUpdateTime())
+                .readNum(articleDO.getReadNum())
+                // 这里使用MD工具类将content转化为HTML代码
+                .content(MarkdownHelper.convertMarkdown2Html(articleContentDO.getContent()))
+                .build();
+
+        // 查询文章所属分类
+        ArticleCategoryRefDO articleCategoryRefDO = articleCategoryRefMapper.selectByArticleId(articleId);
+        CategoryDO categoryDO = categoryMapper.selectById(articleCategoryRefDO.getCategoryId());
+        // 设置vo的所属分类信息
+        vo.setCategoryId(categoryDO.getId());
+        vo.setCategoryName(categoryDO.getName());
+
+        // 查询文章所属标签
+        List<ArticleTagRefDO> articleTagRefDOS = articleTagRefMapper.selectByArticleId(articleId);
+        // 转为标签id集合
+        List<Long> tagIds = articleTagRefDOS.stream().map(ArticleTagRefDO::getTagId).collect(Collectors.toList());
+        // 通过标签ID集合获取所有标签数据
+        List<TagDO> tagDOS = tagMapper.selectByIds(tagIds);
+        // 设置vo的所属标签信息
+        List<FindTagListRspVO> tagVOS = tagDOS.stream().map(
+                tagDO -> FindTagListRspVO.builder()
+                        .id(tagDO.getId())
+                        .name(tagDO.getName())
+                        .build()).collect(Collectors.toList());
+        vo.setTags(tagVOS);
+
+        // 上一篇
+        ArticleDO preArticleDO = articleMapper.selectPreArticle(articleId);
+        if (Objects.nonNull(preArticleDO)){
+            FindPreNextArticleRspVO preArticleVO = FindPreNextArticleRspVO.builder()
+                    .title(preArticleDO.getTitle())
+                    .articleId(preArticleDO.getId())
+                    .build();
+            vo.setPreArticle(preArticleVO);
+        }
+
+        // 下一篇
+        ArticleDO nextArticleDO = articleMapper.selectNextArticle(articleId);
+        if (Objects.nonNull(nextArticleDO)){
+            FindPreNextArticleRspVO nextArticleVO = FindPreNextArticleRspVO.builder()
+                    .title(nextArticleDO.getTitle())
+                    .articleId(nextArticleDO.getId())
+                    .build();
+            vo.setPreArticle(nextArticleVO);
+        }
+
+        return Response.success(vo);
     }
 }

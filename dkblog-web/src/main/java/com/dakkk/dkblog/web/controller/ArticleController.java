@@ -2,6 +2,7 @@ package com.dakkk.dkblog.web.controller;
 
 import com.dakkk.dkblog.common.aspect.ApiOperationLog;
 import com.dakkk.dkblog.common.utils.Response;
+import com.dakkk.dkblog.web.model.vo.article.FindArticleDetailReqVO;
 import com.dakkk.dkblog.web.model.vo.article.FindIndexArticlePageListReqVO;
 import com.dakkk.dkblog.web.service.ArticleService;
 import io.swagger.annotations.Api;
@@ -33,5 +34,12 @@ public class ArticleController {
     @ApiOperationLog(description = "获取首页文章分页数据")
     public Response findArticlePageList(@RequestBody FindIndexArticlePageListReqVO findIndexArticlePageListReqVO){
         return articleService.findArticlePageList(findIndexArticlePageListReqVO);
+    }
+
+    @PostMapping("/detail")
+    @ApiOperation("2-获取文章详情数据")
+    @ApiOperationLog(description = "获取文章详情数据")
+    public Response findArticleDetail(@RequestBody FindArticleDetailReqVO findArticleDetailReqVO){
+        return articleService.findArticleDetail(findArticleDetailReqVO);
     }
 }

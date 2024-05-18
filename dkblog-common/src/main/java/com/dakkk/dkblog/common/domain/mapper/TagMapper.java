@@ -1,6 +1,7 @@
 package com.dakkk.dkblog.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dakkk.dkblog.common.domain.dos.TagDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -34,6 +35,14 @@ public interface TagMapper extends BaseMapper<TagDO> {
         lqw.like(TagDO::getName,key).orderByDesc(TagDO::getCreateTime);
 
         return selectList(lqw);
+    }
+
+    /**
+     * 根据标签 ID 批量查询
+     */
+    default List<TagDO> selectByIds(List<Long> tagIds){
+        return selectList(Wrappers.<TagDO>lambdaQuery()
+                .in(TagDO::getId,tagIds));
     }
 }
 
