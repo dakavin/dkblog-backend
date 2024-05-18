@@ -60,6 +60,11 @@
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark</artifactId>
         </dependency>
+        <!-- MD中表格转换拓展 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
