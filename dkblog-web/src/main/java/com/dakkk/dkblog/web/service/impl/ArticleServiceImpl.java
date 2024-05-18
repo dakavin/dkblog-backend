@@ -203,7 +203,7 @@ public class ArticleServiceImpl implements ArticleService {
                     .title(nextArticleDO.getTitle())
                     .articleId(nextArticleDO.getId())
                     .build();
-            vo.setPreArticle(nextArticleVO);
+            vo.setNextArticle(nextArticleVO);
         }
 
         return Response.success(vo);

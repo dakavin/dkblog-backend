@@ -62,9 +62,9 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
     default ArticleDO selectPreArticle(Long articleId){
         return selectOne(Wrappers.<ArticleDO>lambdaQuery()
                 // 按照文章 ID 升序排列
-                .orderByAsc(ArticleDO::getId)
+                .orderByDesc(ArticleDO::getId)
                 // 查询比当前文章 ID 大的
-                .gt(ArticleDO::getId,articleId)
+                .lt(ArticleDO::getId,articleId)
                 // 第一条记录即为上一篇文章
                 .last("limit 1")
         );
@@ -75,9 +75,9 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
     default ArticleDO selectNextArticle(Long articleId){
         return selectOne(Wrappers.<ArticleDO>lambdaQuery()
                 // 按照文章 ID 降序排列
-                .orderByDesc(ArticleDO::getId)
+                .orderByAsc(ArticleDO::getId)
                 // 查询比当前文章 ID 小的
-                .lt(ArticleDO::getId,articleId)
+                .gt(ArticleDO::getId,articleId)
                 // 第一条记录即为下一篇文章
                 .last("limit 1")
         );
