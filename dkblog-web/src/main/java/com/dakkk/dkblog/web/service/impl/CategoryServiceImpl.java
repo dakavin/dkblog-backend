@@ -89,7 +89,8 @@ public class CategoryServiceImpl implements CategoryService {
         // 若该分类下未发布任何文章
         if (CollectionUtils.isEmpty(articleCategoryRefDOS)){
             log.info("==> 该分类下还为发布任何文章，categoryId：{}",categoryId);
-            return PageResponse.success(null,null);
+            //直接返回null的page对象，会修改前台的size为10，应该是前台默认的size
+            return PageResponse.success(new Page(current,size),null);
         }
 
         // 使用stream，从articleCategoryRefDOS获取文章id的集合
