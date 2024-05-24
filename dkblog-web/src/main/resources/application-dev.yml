@@ -24,3 +24,5 @@ minio:
     accessKey: dakkk
     secretKey: abc123456
     bucketName: dkblog
+server:
+    port: 8081
